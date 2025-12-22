@@ -2,6 +2,16 @@
 
 Last updated: 2025-12-22
 
+## Tracking Files (Source of Truth)
+This repository uses two tracking files:
+1) `.copilot/project-context.md` → living project memory (this file)
+2) `.copilot/project-plan.md` → master project roadmap & tracking
+
+Rules:
+- Read both files before suggesting or generating code
+- Never skip phases or steps; never implement future steps prematurely
+- Always update tracking status incrementally (NOT STARTED / IN PROGRESS / COMPLETED)
+
 ## Purpose
 Build a clean, modular, and correct accounting backend system similar to professional ERP accounting cores.
 Priority: accuracy, auditability, and control over speed/feature count.
@@ -12,6 +22,10 @@ Priority: accuracy, auditability, and control over speed/feature count.
 - All balances derived from posted journal lines
 - Reversal is used instead of editing posted journals
 - Period closing and lock must be enforced
+
+## Roadmap Governance
+The master multi-phase roadmap lives in `.copilot/project-plan.md` and is non-negotiable.
+When a step starts or completes, update the status here (Phase 2 section) and in the master plan file.
 
 ## Developer Notes (Style)
 - Prefer explicit, readable code
