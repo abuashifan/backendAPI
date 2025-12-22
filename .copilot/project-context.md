@@ -79,10 +79,12 @@ Result:
 - Verified `php artisan db:seed` runs twice (idempotent) with SQLite; roles=3, users=3; each seeded user has exactly 1 role.
 
 Upcoming Phase 2 steps (DO NOT IMPLEMENT YET):
-- Step 17: Permission Matrix (design first)
+- Step 17: Permission Matrix (design first) — IN PROGRESS (2025-12-22)
 - Step 18: Policy & Gate
 - Step 19: Journal Approval
 - Step 20: Reversal Logic
 - Step 21: Period Lock
 - Step 22: Audit Log
 - Step 23: General Ledger Query
+
+Step 17 design doc: `.copilot/step-17-permission-matrix.md`

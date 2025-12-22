@@ -102,10 +102,11 @@ Output: Phase 1 completed
 Output: Base system actors
 Verification: `php artisan db:seed` ran twice successfully (idempotent).
 
-[17] Permission Matrix (DESIGN FIRST) — NOT STARTED
+[17] Permission Matrix (DESIGN FIRST) — IN PROGRESS (2025-12-22)
 - Define permissions per role
 - No coding before matrix approved
 Output: Permission map
+Design doc: `.copilot/step-17-permission-matrix.md`
 
 [18] Policy & Gate — NOT STARTED
 - Laravel Policy for authorization
