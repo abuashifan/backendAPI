@@ -51,11 +51,11 @@ class AuditPolicy
     /**
      * Mark a previously flagged audit issue as resolved.
      *
-     * Allowed: admin, auditor
-     * Not allowed: accounting_staff
+     * Allowed: admin
+     * Not allowed: accounting_staff, auditor
      */
     public function markAuditResolved(User $user): bool
     {
-        return $user->hasAnyRole(['admin', 'auditor']);
+        return $user->hasRole('admin');
     }
 }

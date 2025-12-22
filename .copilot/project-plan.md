@@ -115,10 +115,16 @@ Artifacts:
 - Policies: `app/Domain/Accounting/*/*Policy.php`, `app/Domain/System/SystemPolicy.php`
 - Gates: `app/Providers/AppServiceProvider.php`
 
-[19] Journal Approval Flow — NOT STARTED
-- Draft → Submitted → Posted
-- Only authorized roles can approve
-Output: Controlled posting
+[19] Audit Flag & Resolution Logic — COMPLETED (2025-12-22)
+- Audit status: unchecked / checked / issue_flagged / resolved (does not affect balances)
+- No approval workflow; journals remain operational
+Output: Ex-post audit workflow with full journal audit trail
+Artifacts:
+- Migrations: `database/migrations/2025_12_22_100000_add_audit_fields_to_journals_table.php`, `database/migrations/2025_12_22_101000_create_journal_audit_events_table.php`
+- Controllers: `app/Http/Controllers/Api/Audit/JournalAuditController.php`, `app/Http/Controllers/Api/Audit/AuditIssueController.php`
+- Service: `app/Services/Accounting/Audit/JournalAuditService.php`
+- Model: `app/Models/JournalAuditEvent.php`
+- Routes: `routes/api.php`
 
 [20] Reversal Logic — NOT STARTED
 - Reverse posted journals

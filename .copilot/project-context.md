@@ -81,7 +81,7 @@ Result:
 Upcoming Phase 2 steps (DO NOT IMPLEMENT YET):
 - Step 17: Permission Matrix (design first) — COMPLETED (2025-12-22)
 - Step 18: Policy & Gate — COMPLETED (2025-12-22)
-- Step 19: Journal Approval
+- Step 19: Audit Flag & Resolution Logic — COMPLETED (2025-12-22)
 - Step 20: Reversal Logic
 - Step 21: Period Lock
 - Step 22: Audit Log
@@ -93,3 +93,12 @@ Step 18 implementation notes:
 - Added policies: `app/Domain/Accounting/Journal/JournalPolicy.php`, `app/Domain/Accounting/Audit/AuditPolicy.php`, `app/Domain/Accounting/Period/PeriodPolicy.php`, `app/Domain/Accounting/Report/ReportPolicy.php`, `app/Domain/System/SystemPolicy.php`
 - Registered gates in `app/Providers/AppServiceProvider.php`
 - Added `authorize()` calls in `app/Http/Controllers/Api/JournalController.php`
+
+Step 19 implementation notes:
+- Added journal audit fields: `audit_status`, `audit_note`, `audited_by`, `audited_at` (audit does NOT affect balances)
+- Added audit history table `journal_audit_events` (journal-only audit trail; not a global system audit log)
+- Endpoints:
+	- POST `/journals/{id}/audit/check`
+	- POST `/journals/{id}/audit/flag`
+	- POST `/journals/{id}/audit/resolve`
+	- GET  `/audits/issues?audit_status=...`

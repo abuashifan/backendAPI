@@ -43,6 +43,8 @@ class Journal extends Model
             'source_id' => 'integer',
             'created_by' => 'integer',
             'posted_at' => 'datetime',
+            'audited_by' => 'integer',
+            'audited_at' => 'datetime',
         ];
     }
 
@@ -64,5 +66,10 @@ class Journal extends Model
     public function lines(): HasMany
     {
         return $this->hasMany(JournalLine::class);
+    }
+
+    public function auditEvents(): HasMany
+    {
+        return $this->hasMany(JournalAuditEvent::class);
     }
 }

@@ -40,14 +40,16 @@ Last updated: 2025-12-22
 |---|:---:|:---:|:---:|
 | audit check journal | ✅ | ❌ | ✅ |
 | flag audit issue | ✅ | ❌ | ✅ |
-| mark audit resolved | ✅ | ❌ | ✅ |
+| mark audit resolved | ✅ | ❌ | ❌ |
 | view audit status | ✅ | ✅ | ✅ |
 
 ### Rationale (Audit Operations)
 - Audit actions are a **separate layer** from accounting postings: they record review outcomes (unchecked/checked/issue_flagged/resolved) but **do not affect balances**.
-- **auditor** can check/flag/resolve to document findings and follow-up, while remaining unable to change accounting data.
+- **auditor** can check and flag to document findings and follow-up, while remaining unable to change accounting data.
 - **admin** can also perform audit actions to support internal controls and oversight.
 - **accounting_staff** cannot perform audit actions (separation of duties), but can **view audit status** to understand what needs correction.
+
+Amendment (2025-12-22): Auditors can **check** and **flag** issues, but **cannot mark resolved**. Resolution is done by **admin** to preserve separation of duties.
 
 ---
 
