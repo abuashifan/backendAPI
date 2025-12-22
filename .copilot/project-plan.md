@@ -108,9 +108,12 @@ Verification: `php artisan db:seed` ran twice successfully (idempotent).
 Output: Permission map
 Design doc: `.copilot/step-17-permission-matrix.md`
 
-[18] Policy & Gate — NOT STARTED
+[18] Policy & Gate — COMPLETED (2025-12-22)
 - Laravel Policy for authorization
 Output: Access control enforced
+Artifacts:
+- Policies: `app/Domain/Accounting/*/*Policy.php`, `app/Domain/System/SystemPolicy.php`
+- Gates: `app/Providers/AppServiceProvider.php`
 
 [19] Journal Approval Flow — NOT STARTED
 - Draft → Submitted → Posted

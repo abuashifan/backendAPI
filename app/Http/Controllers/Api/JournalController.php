@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Models\Journal;
 use App\Services\Accounting\Journal\JournalService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller as BaseController;
 
-class JournalController extends BaseController
+class JournalController extends Controller
 {
     public function __construct(
         private readonly JournalService $journalService,
@@ -17,6 +17,8 @@ class JournalController extends BaseController
 
     public function index(): JsonResponse
     {
+        $this->authorize('journal.view');
+
         $journals = Journal::query()
             ->orderByDesc('id')
             ->get();
@@ -28,6 +30,8 @@ class JournalController extends BaseController
 
     public function show(int $id): JsonResponse
     {
+        $this->authorize('journal.view');
+
         $journal = Journal::query()
             ->with('lines')
             ->findOrFail($id);
@@ -39,6 +43,10 @@ class JournalController extends BaseController
 
     public function store(Request $request): JsonResponse
     {
+        // Journals are posted immediately (no approval flow), so creating a journal
+        // requires the journal create capability.
+        $this->authorize('journal.create');
+
         $journalAttributes = (array) $request->input('journal', []);
         $linesAttributes = (array) $request->input('lines', []);
 

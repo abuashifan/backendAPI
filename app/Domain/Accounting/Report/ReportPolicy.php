@@ -1,0 +1,48 @@
+<?php
+
+namespace App\Domain\Accounting\Report;
+
+use App\Models\User;
+
+/**
+ * Phase 2 — Step 18: Authorization control (Policy)
+ *
+ * Report Policy controls access to accounting reports.
+ *
+ * Accounting rationale:
+ * - Trial Balance and General Ledger are day-to-day reconciliation tools.
+ * - Financial Statements are management-level outputs, also needed by auditors for independent review.
+ */
+class ReportPolicy
+{
+    /**
+     * View Trial Balance.
+     *
+     * Allowed: admin, accounting_staff, auditor
+     */
+    public function viewTrialBalance(User $user): bool
+    {
+        return $user->hasAnyRole(['admin', 'accounting_staff', 'auditor']);
+    }
+
+    /**
+     * View General Ledger.
+     *
+     * Allowed: admin, accounting_staff, auditor
+     */
+    public function viewGeneralLedger(User $user): bool
+    {
+        return $user->hasAnyRole(['admin', 'accounting_staff', 'auditor']);
+    }
+
+    /**
+     * View Financial Statements.
+     *
+     * Allowed: admin, auditor
+     * Not allowed: accounting_staff
+     */
+    public function viewFinancialStatements(User $user): bool
+    {
+        return $user->hasAnyRole(['admin', 'auditor']);
+    }
+}
