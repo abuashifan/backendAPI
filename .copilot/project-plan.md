@@ -102,7 +102,7 @@ Output: Phase 1 completed
 Output: Base system actors
 Verification: `php artisan db:seed` ran twice successfully (idempotent).
 
-[17] Permission Matrix (DESIGN FIRST) — IN PROGRESS (2025-12-22)
+[17] Permission Matrix (DESIGN FIRST) — COMPLETED (2025-12-22)
 - Define permissions per role
 - No coding before matrix approved
 Output: Permission map
