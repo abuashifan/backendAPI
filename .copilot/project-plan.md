@@ -95,11 +95,12 @@ Output: Phase 1 completed
 
 ## Phase 2 — Control, Approval & Audit
 
-[16] User & Role Seeder — IN PROGRESS (2025-12-22)
+[16] User & Role Seeder — COMPLETED (2025-12-22)
 - Roles: admin, supervisor, entry
 - Seed development users
 - Assign ONE role per user
 Output: Base system actors
+Verification: `php artisan db:seed` ran twice successfully (idempotent).
 
 [17] Permission Matrix (DESIGN FIRST) — NOT STARTED
 - Define permissions per role

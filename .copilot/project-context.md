@@ -66,7 +66,7 @@ When a step starts or completes, update the status here (Phase 2 section) and in
 
 ### Phase 2 — IN PROGRESS
 
-#### Step 16 — User & Role Seeder — IN PROGRESS (2025-12-22)
+#### Step 16 — User & Role Seeder — COMPLETED (2025-12-22)
 Scope:
 - Seed ONLY base roles: admin, supervisor, entry
 - Seed development users
@@ -74,6 +74,9 @@ Scope:
 - DO NOT create permissions
 - DO NOT create policies
 - DO NOT touch journal logic
+
+Result:
+- Verified `php artisan db:seed` runs twice (idempotent) with SQLite; roles=3, users=3; each seeded user has exactly 1 role.
 
 Upcoming Phase 2 steps (DO NOT IMPLEMENT YET):
 - Step 17: Permission Matrix (design first)
