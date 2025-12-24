@@ -22,7 +22,7 @@ class ReportPolicy
      */
     public function viewTrialBalance(User $user): bool
     {
-        return $user->hasAnyRole(['admin', 'accounting_staff', 'auditor']);
+        return $user->hasPermission('report.trial_balance.view');
     }
 
     /**
@@ -32,7 +32,7 @@ class ReportPolicy
      */
     public function viewGeneralLedger(User $user): bool
     {
-        return $user->hasAnyRole(['admin', 'accounting_staff', 'auditor']);
+        return $user->hasPermission('report.general_ledger.view');
     }
 
     /**
@@ -43,6 +43,6 @@ class ReportPolicy
      */
     public function viewFinancialStatements(User $user): bool
     {
-        return $user->hasAnyRole(['admin', 'auditor']);
+        return $user->hasPermission('report.financial_statements.view');
     }
 }

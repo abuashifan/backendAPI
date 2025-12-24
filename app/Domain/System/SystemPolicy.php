@@ -22,7 +22,14 @@ class SystemPolicy
      */
     public function manageUsers(User $user): bool
     {
-        return $user->hasRole('admin');
+        return $user->hasAnyPermission([
+            'user.view',
+            'user.create',
+            'user.edit',
+            'user.deactivate',
+            'permission.assign',
+            'permission.copy',
+        ]);
     }
 
     /**
@@ -32,7 +39,12 @@ class SystemPolicy
      */
     public function manageRoles(User $user): bool
     {
-        return $user->hasRole('admin');
+        return $user->hasAnyPermission([
+            'role.view',
+            'role.create',
+            'role.edit',
+            'role.delete',
+        ]);
     }
 
     /**
@@ -42,6 +54,9 @@ class SystemPolicy
      */
     public function managePermissions(User $user): bool
     {
-        return $user->hasRole('admin');
+        return $user->hasAnyPermission([
+            'permission.view',
+            'permission.assign',
+        ]);
     }
 }

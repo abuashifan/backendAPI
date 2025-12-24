@@ -1,6 +1,6 @@
 # Backend Accounting System (Laravel API) — Project Context
 
-Last updated: 2025-12-22
+Last updated: 2025-12-24
 
 ## Tracking Files (Source of Truth)
 This repository uses two tracking files:
@@ -14,7 +14,15 @@ Rules:
 
 ## Purpose
 Build a clean, modular, and correct accounting backend system similar to professional ERP accounting cores.
-Priority: accuracy, auditability, and control over speed/feature count.
+Priority: accuracy, auditability, and flexible controls over speed/feature count.
+
+## Global Design Principle (LOCKED)
+The application must be flexible and scalable, usable by:
+- UMKM (single user, minimal control)
+- Small–medium organizations (multiple users, controlled access)
+
+The system provides control tools (permissions, optional approval, audit), but does not enforce organizational idealism.
+All operational risks (fraud, separation of duty, maker/approver discipline) remain the client's responsibility.
 
 ## Non-Negotiable Accounting Principles
 - Posted journals are immutable
@@ -22,6 +30,38 @@ Priority: accuracy, auditability, and control over speed/feature count.
 - All balances derived from posted journal lines
 - Reversal is used instead of editing posted journals
 - Period closing and lock must be enforced
+
+## Authorization Model (FINAL)
+- Permissions are user-centric: assigned directly to users.
+- Roles are optional and act only as permission templates.
+- Users may exist without any role.
+
+Authorization checks MUST:
+- Check permission only (e.g. `user->hasPermissionTo('journal.post')`).
+- Never assume role hierarchy.
+- Never enforce maker ≠ approver rules.
+
+## Journal Approval & Posting (FINAL)
+Journal statuses:
+- draft
+- approved
+- posted
+- reversed
+
+Approval is optional and flexible:
+- Self-approval is allowed.
+- Approval may be skipped or auto-applied based on permission.
+
+System must:
+- Validate permission
+- Validate period open
+- Validate budget (if enabled)
+- Record audit trail
+
+System must not:
+- Enforce separation of duty
+- Block self-approval
+- Impose organizational rules
 
 ## Roadmap Governance
 The master multi-phase roadmap lives in `.copilot/project-plan.md` and is non-negotiable.
@@ -37,7 +77,7 @@ When a step starts or completes, update the status here (Phase 2 section) and in
 - Seeder = data initialization only
 - Service layer = business logic only
 - Controllers must stay thin
-- Authorization MUST use Laravel Policy (later phase)
+- Authorization MUST use Laravel Policy / Gate (permission-driven)
 - No business logic in controllers or seeders
 
 ## Strict Do-Not Rules
@@ -45,7 +85,7 @@ When a step starts or completes, update the status here (Phase 2 section) and in
 - Do NOT skip phases
 - Do NOT refactor unrelated code
 - Do NOT introduce accounting logic early
-- Do NOT assume permissions or approval behavior
+- Do NOT enforce organizational workflows (maker/approver, self-approval blocks, role hierarchy)
 
 ## Progress Log
 
@@ -66,39 +106,12 @@ When a step starts or completes, update the status here (Phase 2 section) and in
 
 ### Phase 2 — IN PROGRESS
 
-#### Step 16 — User & Role Seeder — COMPLETED (2025-12-22)
-Scope:
-- Seed ONLY base roles: admin, supervisor, entry
-- Seed development users
-- Assign exactly ONE role per user
-- DO NOT create permissions
-- DO NOT create policies
-- DO NOT touch journal logic
+#### Phase 2 Notes (Status Alignment)
+Phase 2 scope and step definitions have been updated (see `.copilot/project-plan.md`).
 
-Result:
-- Verified `php artisan db:seed` runs twice (idempotent) with SQLite; roles=3, users=3; each seeded user has exactly 1 role.
+Important: earlier implementations (seeders/policies/audit endpoints) were created under a prior set of assumptions and may require refactoring to match the FINAL decisions:
+- Permission model must be user-centric (roles optional templates).
+- Journal lifecycle must support draft/approved/posted/reversed.
+- Approval is optional; self-approval is allowed; no separation-of-duty enforcement.
 
-Upcoming Phase 2 steps (DO NOT IMPLEMENT YET):
-- Step 17: Permission Matrix (design first) — COMPLETED (2025-12-22)
-- Step 18: Policy & Gate — COMPLETED (2025-12-22)
-- Step 19: Audit Flag & Resolution Logic — COMPLETED (2025-12-22)
-- Step 20: Reversal Logic
-- Step 21: Period Lock
-- Step 22: Audit Log
-- Step 23: General Ledger Query
-
-Step 17 design doc: `.copilot/step-17-permission-matrix.md`
-
-Step 18 implementation notes:
-- Added policies: `app/Domain/Accounting/Journal/JournalPolicy.php`, `app/Domain/Accounting/Audit/AuditPolicy.php`, `app/Domain/Accounting/Period/PeriodPolicy.php`, `app/Domain/Accounting/Report/ReportPolicy.php`, `app/Domain/System/SystemPolicy.php`
-- Registered gates in `app/Providers/AppServiceProvider.php`
-- Added `authorize()` calls in `app/Http/Controllers/Api/JournalController.php`
-
-Step 19 implementation notes:
-- Added journal audit fields: `audit_status`, `audit_note`, `audited_by`, `audited_at` (audit does NOT affect balances)
-- Added audit history table `journal_audit_events` (journal-only audit trail; not a global system audit log)
-- Endpoints:
-	- POST `/journals/{id}/audit/check`
-	- POST `/journals/{id}/audit/flag`
-	- POST `/journals/{id}/audit/resolve`
-	- GET  `/audits/issues?audit_status=...`
+Use `.copilot/project-plan.md` as the source of truth for what to implement next.

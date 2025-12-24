@@ -8,7 +8,7 @@ use Spatie\Permission\Models\Role;
 class RoleSeeder extends Seeder
 {
     /**
-     * Seed base system roles.
+     * Seed base system roles (optional templates).
      *
      * Scope: roles only (no permissions).
      * Idempotent: safe to run multiple times.

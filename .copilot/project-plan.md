@@ -1,6 +1,6 @@
 # Backend Accounting System (Laravel API) — Master Project Plan
 
-Last updated: 2025-12-22
+Last updated: 2025-12-24
 
 ## Rules (Non-Negotiable)
 - This file is the master roadmap & tracking.
@@ -95,100 +95,96 @@ Output: Phase 1 completed
 
 ## Phase 2 — Control, Approval & Audit
 
-[16] User & Role Seeder — COMPLETED (2025-12-22)
-- Roles: admin, supervisor, entry
-- Seed development users
-- Assign ONE role per user
-Output: Base system actors
-Verification: `php artisan db:seed` ran twice successfully (idempotent).
+Note: Some Phase 2-related code may already exist from earlier iterations; treat this plan as the FINAL source of truth and refactor/remove anything that conflicts with the user-centric permission model and optional approval workflow.
 
-[17] Permission Matrix (DESIGN FIRST) — COMPLETED (2025-12-22)
-- Define permissions per role
-- No coding before matrix approved
-Output: Permission map
-Design doc: `.copilot/step-17-permission-matrix.md`
+[16] User, Role & Permission Foundation — COMPLETED (2025-12-24)
+- Seed initial admin user
+- Seed roles as OPTIONAL templates
+- Seed permissions as standalone entities
 
-[18] Policy & Gate — COMPLETED (2025-12-22)
-- Laravel Policy for authorization
-Output: Access control enforced
-Artifacts:
-- Policies: `app/Domain/Accounting/*/*Policy.php`, `app/Domain/System/SystemPolicy.php`
-- Gates: `app/Providers/AppServiceProvider.php`
+[17] Permission Matrix (Atomic & Granular) — COMPLETED (2025-12-24)
+- Define final permission list per module
+- Ensure permissions are independent of roles
 
-[19] Audit Flag & Resolution Logic — COMPLETED (2025-12-22)
-- Audit status: unchecked / checked / issue_flagged / resolved (does not affect balances)
-- No approval workflow; journals remain operational
-Output: Ex-post audit workflow with full journal audit trail
-Artifacts:
-- Migrations: `database/migrations/2025_12_22_100000_add_audit_fields_to_journals_table.php`, `database/migrations/2025_12_22_101000_create_journal_audit_events_table.php`
-- Controllers: `app/Http/Controllers/Api/Audit/JournalAuditController.php`, `app/Http/Controllers/Api/Audit/AuditIssueController.php`
-- Service: `app/Services/Accounting/Audit/JournalAuditService.php`
-- Model: `app/Models/JournalAuditEvent.php`
-- Routes: `routes/api.php`
+[18] User Permission Assignment & Override — NOT STARTED
+- Assign permissions directly to users
+- Allow override even if user has a role
+- Support permission copy between users
 
-[20] Reversal Logic — NOT STARTED
-- Reverse posted journals
-- No edit/delete of posted data
-Output: Safe correction mechanism
+[19] Policy & Gate (Permission-Driven) — NOT STARTED
+- Implement Laravel Policy / Gate
+- Authorization checks MUST use permission only
 
-[21] Period Lock Logic — NOT STARTED
-- Prevent posting to closed periods
-Output: Period control
+[20] Journal Status & Transition Rules — NOT STARTED
+- Define permission-based journal state transitions
+- Support self-approve, auto-approve, skip-approve
 
-[22] Audit Log — NOT STARTED
-- Track all critical actions
-Output: Audit trail
+[21] Journal Approval & Posting API — NOT STARTED
+- Implement create (draft), approve (optional), post
+- Auto-approve when allowed by permission
+- Validate period and budget
 
-[23] General Ledger Query — NOT STARTED
-- Account ledger
-- Running balance
-Output: GL reporting logic
+[22] Reversal Journal Logic — NOT STARTED
+- Allow reversal for POSTED journals only
+- Create automatic reversing journal
 
-[24] Phase 2 Review — NOT STARTED
-- Test approval, lock, reversal
-Output: Phase 2 completed
+[23] Period Lock (Open / Close) — NOT STARTED
+- Block posting & reversal when period is closed
+- Allow reopen with permission & audit log
+
+[24] Audit Log & Activity Tracking — NOT STARTED
+- Log create, approve, post, reverse, period open/close
+- Audit is RECORDING, not PREVENTION
+
+[25] General Ledger Query — NOT STARTED
+- GL is derived from POSTED journal_lines only
+
+[26] Phase 2 Review — NOT STARTED
+- Validate UMKM scenario (1 user, all permissions)
+- Validate multi-user scenario
+- Ensure no enforced workflow rigidity
 
 ---
 
 ## Phase 3 — AP / AR Automation
 
-[25] Vendor & Customer Master — NOT STARTED
+[27] Vendor & Customer Master — NOT STARTED
 - vendors
 - customers
 Output: Business partners
 
-[26] Purchasing Tables (AP) — NOT STARTED
+[28] Purchasing Tables (AP) — NOT STARTED
 - Purchase orders
 - Vendor invoices
 - Payments
 Output: AP schema
 
-[27] Sales Tables (AR) — NOT STARTED
+[29] Sales Tables (AR) — NOT STARTED
 - Sales invoices
 - Customer payments
 Output: AR schema
 
-[28] Purchasing Service — NOT STARTED
+[30] Purchasing Service — NOT STARTED
 - AP transactions → auto journal
 Output: AP accounting automation
 
-[29] Sales Service — NOT STARTED
+[31] Sales Service — NOT STARTED
 - AR transactions → auto journal
 Output: AR accounting automation
 
-[30] Payment Service — NOT STARTED
+[32] Payment Service — NOT STARTED
 - Cash / Bank journals
 Output: Payment accounting
 
-[31] Purchasing API — NOT STARTED
+[33] Purchasing API — NOT STARTED
 - PO, Invoice, Payment
 Output: AP API
 
-[32] Sales API — NOT STARTED
+[34] Sales API — NOT STARTED
 - Invoice, Payment
 Output: AR API
 
-[33] Phase 3 Review — NOT STARTED
+[35] Phase 3 Review — NOT STARTED
 - End-to-end AP/AR testing
 Output: Phase 3 completed
 
@@ -196,36 +192,36 @@ Output: Phase 3 completed
 
 ## Phase 4 — Inventory & Budget Control
 
-[34] Product & Warehouse Master — NOT STARTED
+[36] Product & Warehouse Master — NOT STARTED
 - products
 - warehouses
 Output: Inventory master data
 
-[35] Inventory Movement Logic — NOT STARTED
+[37] Inventory Movement Logic — NOT STARTED
 - Stock IN / OUT
 Output: Inventory flow
 
-[36] Inventory Valuation — NOT STARTED
+[38] Inventory Valuation — NOT STARTED
 - FIFO or Average
 Output: Cost calculation
 
-[37] COGS Journal — NOT STARTED
+[39] COGS Journal — NOT STARTED
 - Sales → COGS journal
 Output: Correct margins
 
-[38] Project & Budget Tables — NOT STARTED
+[40] Project & Budget Tables — NOT STARTED
 - project_budget
 Output: Budget schema
 
-[39] Budget Service — NOT STARTED
+[41] Budget Service — NOT STARTED
 - Budget aggregation
 Output: Budget engine
 
-[40] Budget Control — NOT STARTED
+[42] Budget Control — NOT STARTED
 - Hard stop or warning
 Output: Budget enforcement
 
-[41] Phase 4 Review — NOT STARTED
+[43] Phase 4 Review — NOT STARTED
 - Budget vs actual
 Output: Phase 4 completed
 
@@ -233,30 +229,30 @@ Output: Phase 4 completed
 
 ## Phase 5 — Reporting & Finalization
 
-[42] Financial Reports — NOT STARTED
+[44] Financial Reports — NOT STARTED
 - Profit & Loss
 - Balance Sheet
 Output: Core financial reports
 
-[43] Budget Reports — NOT STARTED
+[45] Budget Reports — NOT STARTED
 - Budget vs actual pivot
 Output: Budget reporting
 
-[44] API Hardening — NOT STARTED
+[46] API Hardening — NOT STARTED
 - Validation
 - Error handling
 Output: Stable API
 
-[45] Performance Optimization — NOT STARTED
+[47] Performance Optimization — NOT STARTED
 - Indexing
 - Query tuning
 Output: Fast system
 
-[46] Documentation — NOT STARTED
+[48] Documentation — NOT STARTED
 - API documentation
 - Flow documentation
 Output: Project documentation
 
-[47] Final Testing — NOT STARTED
+[49] Final Testing — NOT STARTED
 - Business scenario testing
 Output: Backend system completed
