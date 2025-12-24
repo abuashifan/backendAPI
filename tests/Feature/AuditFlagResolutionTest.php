@@ -8,23 +8,15 @@ use App\Models\Journal;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
-use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class AuditFlagResolutionTest extends TestCase
 {
     use RefreshDatabase;
 
-    private function seedRoles(): void
+    private function seedPermissions(): void
     {
-        $guardName = (string) config('auth.defaults.guard', 'web');
-
-        foreach (['admin', 'accounting_staff', 'auditor'] as $roleName) {
-            Role::query()->firstOrCreate([
-                'name' => $roleName,
-                'guard_name' => $guardName,
-            ]);
-        }
+        $this->seed(\Database\Seeders\PermissionSeeder::class);
     }
 
     private function makeJournal(int $createdByUserId): Journal
@@ -65,13 +57,12 @@ class AuditFlagResolutionTest extends TestCase
 
     public function test_auditor_can_flag_issue_but_cannot_resolve(): void
     {
-        $this->seedRoles();
+        $this->seedPermissions();
 
         $auditor = User::factory()->create();
-        $auditor->assignRole('auditor');
+        $auditor->syncPermissions(['audit.flagIssue', 'audit.viewStatus']);
 
         $journalCreator = User::factory()->create();
-        $journalCreator->assignRole('accounting_staff');
 
         $journal = $this->makeJournal($journalCreator->id);
 
@@ -104,13 +95,12 @@ class AuditFlagResolutionTest extends TestCase
 
     public function test_admin_can_resolve_issue(): void
     {
-        $this->seedRoles();
+        $this->seedPermissions();
 
         $admin = User::factory()->create();
-        $admin->assignRole('admin');
+        $admin->syncPermissions(['audit.flagIssue', 'audit.resolve', 'audit.viewStatus']);
 
         $journalCreator = User::factory()->create();
-        $journalCreator->assignRole('accounting_staff');
 
         $journal = $this->makeJournal($journalCreator->id);
 
@@ -140,10 +130,9 @@ class AuditFlagResolutionTest extends TestCase
 
     public function test_staff_cannot_audit(): void
     {
-        $this->seedRoles();
+        $this->seedPermissions();
 
         $staff = User::factory()->create();
-        $staff->assignRole('accounting_staff');
 
         $journal = $this->makeJournal($staff->id);
 
@@ -161,13 +150,12 @@ class AuditFlagResolutionTest extends TestCase
 
     public function test_issues_endpoint_filters_by_status(): void
     {
-        $this->seedRoles();
+        $this->seedPermissions();
 
         $admin = User::factory()->create();
-        $admin->assignRole('admin');
+        $admin->syncPermissions(['audit.flagIssue', 'audit.resolve', 'audit.viewStatus']);
 
         $journalCreator = User::factory()->create();
-        $journalCreator->assignRole('accounting_staff');
 
         $journal = $this->makeJournal($journalCreator->id);
 

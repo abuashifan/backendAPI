@@ -23,7 +23,7 @@ class AuditPolicy
      */
     public function viewAuditStatus(User $user): bool
     {
-        return $user->hasAnyRole(['admin', 'accounting_staff', 'auditor']);
+        return $user->hasPermission('audit.viewStatus');
     }
 
     /**
@@ -34,7 +34,7 @@ class AuditPolicy
      */
     public function auditCheckJournal(User $user): bool
     {
-        return $user->hasAnyRole(['admin', 'auditor']);
+        return $user->hasPermission('audit.check');
     }
 
     /**
@@ -45,7 +45,7 @@ class AuditPolicy
      */
     public function flagAuditIssue(User $user): bool
     {
-        return $user->hasAnyRole(['admin', 'auditor']);
+        return $user->hasPermission('audit.flagIssue');
     }
 
     /**
@@ -56,6 +56,6 @@ class AuditPolicy
      */
     public function markAuditResolved(User $user): bool
     {
-        return $user->hasRole('admin');
+        return $user->hasPermission('audit.resolve');
     }
 }

@@ -7,6 +7,7 @@ use App\Domain\Accounting\Journal\JournalPolicy;
 use App\Domain\Accounting\Period\PeriodPolicy;
 use App\Domain\Accounting\Report\ReportPolicy;
 use App\Domain\System\SystemPolicy;
+use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -53,5 +54,9 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('system.manageUsers', [SystemPolicy::class, 'manageUsers']);
         Gate::define('system.manageRoles', [SystemPolicy::class, 'manageRoles']);
         Gate::define('system.managePermissions', [SystemPolicy::class, 'managePermissions']);
+
+        // Phase 2 — Step 18: User-centric permission management
+        Gate::define('permission.assign', fn (User $user): bool => $user->hasPermission('permission.assign'));
+        Gate::define('permission.copy', fn (User $user): bool => $user->hasPermission('permission.copy'));
     }
 }

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Exceptions\PermissionDoesNotExist;
 
 class User extends Authenticatable
 {
@@ -45,5 +46,42 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * User-centric permission check wrapper.
+     *
+     * Authorization rule: check permission only; do not assume roles.
+     */
+    public function hasPermission(string $permission): bool
+    {
+        try {
+            return $this->hasPermissionTo($permission);
+        } catch (PermissionDoesNotExist) {
+            return false;
+        }
+    }
+
+    /**
+     * User-centric permission assignment wrapper.
+     */
+    public function givePermission(string $permission): self
+    {
+        $this->givePermissionTo($permission);
+
+        return $this;
+    }
+
+    /**
+     * Copy direct permissions from another user.
+     *
+     * Note: this syncs direct permissions only; it does not change roles.
+     */
+    public function copyPermissionsFrom(User $source): self
+    {
+        $permissions = $source->getDirectPermissions()->pluck('name')->all();
+        $this->syncPermissions($permissions);
+
+        return $this;
     }
 }

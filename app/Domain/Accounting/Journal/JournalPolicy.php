@@ -10,7 +10,7 @@ use App\Models\User;
  * Journal Policy enforces Step 17 Permission Matrix for journal operations.
  *
  * Important accounting notes:
- * - Journals are posted immediately (no approval workflow).
+ * - Journal lifecycle supports draft/approved/posted/reversed.
  * - Posted journals are immutable (no edit, no delete).
  * - Corrections are performed using journal reversal.
  *
@@ -25,7 +25,7 @@ class JournalPolicy
      */
     public function viewJournal(User $user): bool
     {
-        return $user->hasAnyRole(['admin', 'accounting_staff', 'auditor']);
+        return $user->hasPermission('journal.view');
     }
 
     /**
@@ -36,7 +36,7 @@ class JournalPolicy
      */
     public function createJournal(User $user): bool
     {
-        return $user->hasAnyRole(['admin', 'accounting_staff']);
+        return $user->hasPermission('journal.create');
     }
 
     /**
@@ -50,7 +50,7 @@ class JournalPolicy
      */
     public function postJournal(User $user): bool
     {
-        return $user->hasAnyRole(['admin', 'accounting_staff']);
+        return $user->hasPermission('journal.post');
     }
 
     /**
@@ -61,6 +61,6 @@ class JournalPolicy
      */
     public function reverseJournal(User $user): bool
     {
-        return $user->hasAnyRole(['admin', 'accounting_staff']);
+        return $user->hasPermission('journal.reverse');
     }
 }

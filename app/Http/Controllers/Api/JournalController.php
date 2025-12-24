@@ -43,8 +43,7 @@ class JournalController extends Controller
 
     public function store(Request $request): JsonResponse
     {
-        // Journals are posted immediately (no approval flow), so creating a journal
-        // requires the journal create capability.
+        // Creating a journal draft requires the journal create capability.
         $this->authorize('journal.create');
 
         $journalAttributes = (array) $request->input('journal', []);

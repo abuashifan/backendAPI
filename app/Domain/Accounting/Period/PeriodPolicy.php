@@ -22,7 +22,7 @@ class PeriodPolicy
      */
     public function viewAccountingPeriod(User $user): bool
     {
-        return $user->hasAnyRole(['admin', 'accounting_staff', 'auditor']);
+        return $user->hasPermission('period.view');
     }
 
     /**
@@ -33,6 +33,6 @@ class PeriodPolicy
      */
     public function closeAccountingPeriod(User $user): bool
     {
-        return $user->hasRole('admin');
+        return $user->hasPermission('period.close');
     }
 }

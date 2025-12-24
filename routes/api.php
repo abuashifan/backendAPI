@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\JournalController;
 use App\Http\Controllers\Api\Audit\AuditIssueController;
 use App\Http\Controllers\Api\Audit\JournalAuditController;
+use App\Http\Controllers\Api\System\UserPermissionController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -15,4 +16,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('journals/{journal}/audit/resolve', [JournalAuditController::class, 'resolve']);
 
     Route::get('audits/issues', [AuditIssueController::class, 'index']);
+
+    // Phase 2 — Step 18: User-centric permission assignment
+    Route::put('users/{user}/permissions', [UserPermissionController::class, 'sync']);
+    Route::post('users/{user}/permissions/copy-from/{source}', [UserPermissionController::class, 'copyFrom']);
 });
