@@ -54,7 +54,6 @@ class PermissionSeeder extends Seeder
             // Reporting
             'report.trial_balance.view',
             'report.general_ledger.view',
-            'report.financial_statements.view',
 
             // System / Access Control
             'user.view',

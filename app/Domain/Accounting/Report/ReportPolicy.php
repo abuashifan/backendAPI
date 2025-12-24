@@ -34,15 +34,4 @@ class ReportPolicy
     {
         return $user->hasPermission('report.general_ledger.view');
     }
-
-    /**
-     * View Financial Statements.
-     *
-     * Allowed: admin, auditor
-     * Not allowed: accounting_staff
-     */
-    public function viewFinancialStatements(User $user): bool
-    {
-        return $user->hasPermission('report.financial_statements.view');
-    }
 }

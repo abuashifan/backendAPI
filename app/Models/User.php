@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Spatie\Permission\Exceptions\PermissionDoesNotExist;
 
 class User extends Authenticatable
 {
@@ -51,15 +50,36 @@ class User extends Authenticatable
     /**
      * User-centric permission check wrapper.
      *
-     * Authorization rule: check permission only; do not assume roles.
+     * Authorization rule: permissions are user-centric; roles are templates only.
+     *
+     * This intentionally checks DIRECT permissions only (not role-derived permissions)
+     * so a user can be customized without role side-effects.
      */
     public function hasPermission(string $permission): bool
     {
-        try {
-            return $this->hasPermissionTo($permission);
-        } catch (PermissionDoesNotExist) {
-            return false;
+        return $this->getDirectPermissions()->contains('name', $permission);
+    }
+
+    /**
+     * Direct-only variant of Spatie's hasAnyPermission.
+     *
+     * Supports both:
+     * - $user->hasAnyPermission('a', 'b')
+     * - $user->hasAnyPermission(['a', 'b'])
+     */
+    public function hasAnyPermission(...$permissions): bool
+    {
+        if (count($permissions) === 1 && is_array($permissions[0])) {
+            $permissions = $permissions[0];
         }
+
+        foreach ($permissions as $permission) {
+            if ($this->hasPermission((string) $permission)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
