@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\JournalController;
 use App\Http\Controllers\Api\AccountingPeriodController;
 use App\Http\Controllers\Api\CustomerController;
+use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\Audit\AuditIssueController;
 use App\Http\Controllers\Api\Audit\JournalAuditController;
 use App\Http\Controllers\Api\Accounting\AP\PurchaseOrderController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\Api\Accounting\AR\CustomerPaymentController;
 use App\Http\Controllers\Api\Accounting\AR\SalesInvoiceController;
 use App\Http\Controllers\Api\System\UserPermissionController;
 use App\Http\Controllers\Api\VendorController;
+use App\Http\Controllers\Api\WarehouseController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -20,6 +22,13 @@ Route::middleware('auth:sanctum')->group(function () {
         ->only(['index', 'show', 'store', 'update', 'destroy']);
 
     Route::apiResource('customers', CustomerController::class)
+        ->only(['index', 'show', 'store', 'update', 'destroy']);
+
+    // Phase 4 — Step 36: Product & Warehouse master data
+    Route::apiResource('products', ProductController::class)
+        ->only(['index', 'show', 'store', 'update', 'destroy']);
+
+    Route::apiResource('warehouses', WarehouseController::class)
         ->only(['index', 'show', 'store', 'update', 'destroy']);
 
     // Phase 3 — Step 33: Purchasing (AP)

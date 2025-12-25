@@ -8,6 +8,7 @@ use App\Policies\AuditPolicy;
 use App\Policies\CustomerPolicy;
 use App\Policies\CustomerPaymentPolicy;
 use App\Policies\JournalPolicy;
+use App\Policies\ProductPolicy;
 use App\Policies\PurchaseOrderPolicy;
 use App\Policies\ReportPolicy;
 use App\Policies\SalesInvoicePolicy;
@@ -15,6 +16,7 @@ use App\Policies\UserPolicy;
 use App\Policies\VendorInvoicePolicy;
 use App\Policies\VendorPaymentPolicy;
 use App\Policies\VendorPolicy;
+use App\Policies\WarehousePolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -63,6 +65,17 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('customer.create', [CustomerPolicy::class, 'create']);
         Gate::define('customer.edit', [CustomerPolicy::class, 'edit']);
         Gate::define('customer.delete', [CustomerPolicy::class, 'delete']);
+
+        // Phase 4 — Step 36: Product & Warehouse master data
+        Gate::define('product.view', [ProductPolicy::class, 'view']);
+        Gate::define('product.create', [ProductPolicy::class, 'create']);
+        Gate::define('product.edit', [ProductPolicy::class, 'edit']);
+        Gate::define('product.delete', [ProductPolicy::class, 'delete']);
+
+        Gate::define('warehouse.view', [WarehousePolicy::class, 'view']);
+        Gate::define('warehouse.create', [WarehousePolicy::class, 'create']);
+        Gate::define('warehouse.edit', [WarehousePolicy::class, 'edit']);
+        Gate::define('warehouse.delete', [WarehousePolicy::class, 'delete']);
 
         // Phase 3 — Step 33: Purchasing API (AP)
         Gate::define('purchase_order.view', [PurchaseOrderPolicy::class, 'view']);

@@ -46,6 +46,17 @@ class PermissionSeeder extends Seeder
             'customer.edit',
             'customer.delete',
 
+            // Phase 4 — Step 36: Product & Warehouse master data
+            'product.view',
+            'product.create',
+            'product.edit',
+            'product.delete',
+
+            'warehouse.view',
+            'warehouse.create',
+            'warehouse.edit',
+            'warehouse.delete',
+
             // Phase 3 — Step 33: Purchasing (AP) API
             'purchase_order.view',
             'purchase_order.create',

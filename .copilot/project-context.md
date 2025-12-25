@@ -71,7 +71,7 @@ Journal statuses:
 - Audit logging for journal and period lifecycle events
 - General Ledger query derived from POSTED journal lines only
 
-### Phase 3 — IN PROGRESS
+### Phase 3 — COMPLETED (2025-12-25)
 
 #### Step 27 — Vendor & Customer Master
 Work completed (2025-12-25):
@@ -149,6 +149,17 @@ Work completed (2025-12-25):
 - Validated key guardrails:
 	- Period lock blocks posting when closed
 	- Payment allocations require posted invoices
+
+### Phase 4 — IN PROGRESS
+
+#### Step 36 — Product & Warehouse Master
+Work completed (2025-12-25):
+- Added products and warehouses tables (company-scoped unique codes) with is_active and basic indexing
+- Added Product and Warehouse models with Company relationship
+- Added master-data services for create/update uniqueness enforcement
+- Added product.* and warehouse.* permissions, policies, and gates
+- Added protected API endpoints (CRUD) for products and warehouses
+- Added feature tests for permission enforcement, happy-path CRUD, and per-company code uniqueness
 
 ## AP/AR Document Workflow (FINAL)
 AP/AR business documents (vendor invoices, customer invoices, payments) use a 3-stage workflow:
