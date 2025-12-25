@@ -1,6 +1,6 @@
 # Backend Accounting System (Laravel API) — Master Project Plan
 
-Last updated: 2025-12-24
+Last updated: 2025-12-25
 
 ## Rules (Non-Negotiable)
 - This file is the master roadmap & tracking.
@@ -118,6 +118,7 @@ Note: Some Phase 2-related code may already exist from earlier iterations; treat
 [20] Journal Status & Transition Rules — COMPLETED (2025-12-25)
 - Define permission-based journal state transitions
 - Support self-approve, auto-approve, skip-approve
+- Record approval flexibility requirement: approval behavior must be configurable (e.g. auto-approve for UMKM vs separate approver) via settings, without hard-coded rigidity
 
 [21] Journal Approval & Posting API — COMPLETED (2025-12-25)
 - Implement create (draft), approve (optional), post
@@ -153,13 +154,13 @@ Note: Some Phase 2-related code may already exist from earlier iterations; treat
 - customers
 Output: Business partners
 
-[28] Purchasing Tables (AP) — NOT STARTED
+[28] Purchasing Tables (AP) — COMPLETED (2025-12-25)
 - Purchase orders
 - Vendor invoices
 - Payments
 Output: AP schema
 
-[29] Sales Tables (AR) — NOT STARTED
+[29] Sales Tables (AR) — IN PROGRESS (2025-12-25)
 - Sales invoices
 - Customer payments
 Output: AR schema

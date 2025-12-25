@@ -1,6 +1,6 @@
 # Backend Accounting System (Laravel API) — Project Context
 
-Last updated: 2025-12-24
+Last updated: 2025-12-25
 
 ## Tracking Files (Source of Truth)
 This repository uses two tracking files:
@@ -39,6 +39,7 @@ All operational risks (fraud, separation of duty, maker/approver discipline) rem
 Authorization checks MUST:
 - Check permission only (e.g. `user->hasPermissionTo('journal.post')`).
 - Never assume role hierarchy.
+- Approval workflow behavior may be configured via settings (e.g. auto-approve vs separate approver) while keeping permission checks as the enforcement mechanism.
 - Never enforce maker ≠ approver rules.
 
 ## Journal Approval & Posting (FINAL)
@@ -51,6 +52,7 @@ Journal statuses:
 Approval is optional and flexible:
 - Self-approval is allowed.
 - Approval may be skipped or auto-applied based on permission.
+- Approval behavior can be configured via settings (e.g. auto-approve for UMKM; require separate approver for controlled orgs).
 
 System must:
 - Validate permission
@@ -124,6 +126,12 @@ Tracking status source of truth remains `.copilot/project-plan.md`.
 
 #### Step 27 — Vendor & Customer Master
 Work completed (2025-12-25):
-- Added `vendors` and `customers` tables (company-scoped unique codes)
-- Added `Vendor`/`Customer` models and CRUD services
-- Added permission-driven gates and protected API endpoints
+#### Step 28 — Purchasing Tables (AP)
+Work completed (2025-12-25):
+- Added AP schema tables: purchase_orders, purchase_order_lines, vendor_invoices, vendor_invoice_lines, vendor_payments, vendor_payment_allocations
+- Schema-only artifacts (migrations); no accounting logic added
+
+#### Step 29 — Sales Tables (AR)
+Work in progress (2025-12-25):
+- Target schema: sales_invoices, sales_invoice_lines, customer_payments, customer_payment_allocations
+- This step is schema-only; no services/controllers/API and no journal/ledger changes
