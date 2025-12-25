@@ -172,7 +172,7 @@ Output: AR schema
 - Must support configurable behavior: UMKM may auto-approve and auto-post in one action when permitted; controlled orgs may require separate approver vs poster
 Output: AP accounting automation
 
-[31] Sales Service — NOT STARTED
+[31] Sales Service — COMPLETED (2025-12-25)
 - AR transactions → auto journal
 - AR business documents follow 3-stage workflow: draft -> approved -> posted
 - Auto-journal is created and posted when the AR document is posted (not on approved)

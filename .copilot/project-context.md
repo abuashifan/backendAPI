@@ -98,6 +98,13 @@ Work completed (2025-12-25):
 - Purchase order approve and cancel services
 - Added vendor_invoices.posted_by and vendor_invoices.posted_at
 
+#### Step 31 — Sales Service (AR)
+Work completed (2025-12-25):
+- Sales invoice draft CRUD service (draft create/update/delete + line totals)
+- Sales invoice approve service (draft -> approved)
+- Sales invoice posting service creates and posts an auto-journal on document posting (approved -> posted_at)
+- Added sales_invoices.posted_by and sales_invoices.posted_at
+
 ## AP/AR Document Workflow (FINAL)
 AP/AR business documents (vendor invoices, customer invoices, payments) use a 3-stage workflow:
 - draft -> approved -> posted
