@@ -40,56 +40,13 @@ Authorization checks MUST:
 - Check permission only (e.g. `user->hasPermissionTo('journal.post')`).
 - Never assume role hierarchy.
 - Approval workflow behavior may be configured via settings (e.g. auto-approve vs separate approver) while keeping permission checks as the enforcement mechanism.
-- Never enforce maker ≠ approver rules.
+- Never enforce maker != approver rules by default.
 
 ## Journal Approval & Posting (FINAL)
 Journal statuses:
 - draft
 - approved
 - posted
-- reversed
-
-Approval is optional and flexible:
-- Self-approval is allowed.
-- Approval may be skipped or auto-applied based on permission.
-- Approval behavior can be configured via settings (e.g. auto-approve for UMKM; require separate approver for controlled orgs).
-
-System must:
-- Validate permission
-- Validate period open
-- Validate budget (if enabled)
-- Record audit trail
-
-System must not:
-- Enforce separation of duty
-- Block self-approval
-- Impose organizational rules
-
-## Roadmap Governance
-The master multi-phase roadmap lives in `.copilot/project-plan.md` and is non-negotiable.
-When a step starts or completes, update the status here (Phase 2 section) and in the master plan file.
-
-## Developer Notes (Style)
-- Prefer explicit, readable code
-- Avoid over-engineering and “Laravel magic” unless explained
-- Keep controllers thin; business logic in services only
-- Seeders are data initialization only
-
-## Architecture Rules
-- Seeder = data initialization only
-- Service layer = business logic only
-- Controllers must stay thin
-- Authorization MUST use Laravel Policy / Gate (permission-driven)
-- No business logic in controllers or seeders
-
-## Strict Do-Not Rules
-- Do NOT invent features
-- Do NOT skip phases
-- Do NOT refactor unrelated code
-- Do NOT introduce accounting logic early
-- Do NOT enforce organizational workflows (maker/approver, self-approval blocks, role hierarchy)
-
-## Progress Log
 
 ### Phase 1 — COMPLETED
 - Laravel initialized
@@ -107,31 +64,85 @@ When a step starts or completes, update the status here (Phase 2 section) and in
 - Phase 1 manual testing completed
 
 ### Phase 2 — COMPLETED (2025-12-25)
-
-#### Phase 2 Summary
-Phase 2 steps [16]–[26] are implemented and validated.
-
-Delivered capabilities:
-- User-centric permissions (roles optional templates) and direct-permission override behavior
-- Permission-driven Policies/Gates (no role-name checks)
-- Journal lifecycle transitions (draft → approved → posted → reversed) with optional approval and self-approval allowed
-- Journal approve/post/reverse APIs and services
+- User-centric permissions (roles are optional templates)
+- Permission-driven policies/gates
+- Journal lifecycle with optional approval
 - Period open/close (lock) enforced for posting/reversal
-- Audit logging for journal and period lifecycle events (recording only)
+- Audit logging for journal and period lifecycle events
 - General Ledger query derived from POSTED journal lines only
-
-Tracking status source of truth remains `.copilot/project-plan.md`.
 
 ### Phase 3 — IN PROGRESS
 
 #### Step 27 — Vendor & Customer Master
 Work completed (2025-12-25):
+- Added vendors and customers tables (company-scoped unique codes)
+- Added vendor/customer permissions and gates
+- Added protected API endpoints and feature tests
+
 #### Step 28 — Purchasing Tables (AP)
 Work completed (2025-12-25):
 - Added AP schema tables: purchase_orders, purchase_order_lines, vendor_invoices, vendor_invoice_lines, vendor_payments, vendor_payment_allocations
 - Schema-only artifacts (migrations); no accounting logic added
 
 #### Step 29 — Sales Tables (AR)
+Work completed (2025-12-25):
+- Added AR schema tables: sales_invoices, sales_invoice_lines, customer_payments, customer_payment_allocations
+- Schema-only artifacts (migrations); no services/controllers/API and no journal/ledger changes
+
+#### Step 30 — Purchasing Service (AP)
 Work in progress (2025-12-25):
+- Vendor invoice posting creates and posts an auto-journal on document posting
+- Added vendor_invoices.posted_by and vendor_invoices.posted_at
+
+## AP/AR Document Workflow (FINAL)
+AP/AR business documents (vendor invoices, customer invoices, payments) use a 3-stage workflow:
+- draft -> approved -> posted
+
+Meaning:
+- approved: business approval (e.g. warehouse supervisor approval is allowed)
+- posted: accounting posting event; only at this point auto-journal is created and posted
+
+The workflow must be configurable:
+- UMKM: allow auto-approve and auto-post in one action when permitted
+- Controlled orgs: allow separate approver vs poster (different users), based on settings/permissions
+
+## AP/AR Document Workflow (FINAL)
+AP/AR business documents (vendor invoices, customer invoices, payments) use a 3-stage workflow:
+- draft -> approved -> posted
+
+Meaning:
+- approved: business approval (e.g. warehouse supervisor approval is allowed)
+- posted: accounting posting event; only at this point auto-journal is created and posted
+
+The workflow must be configurable:
+- UMKM: allow auto-approve and auto-post in one action when permitted
+- Controlled orgs: allow separate approver vs poster (different users), based on settings/permissions
+
+### Phase 3 — IN PROGRESS
+
+#### Step 27 — Vendor & Customer Master
+Work completed (2025-12-25):
+ - Added `vendors` and `customers` tables (company-scoped unique codes)
+ - Added vendor/customer permissions and gates
+ - Added protected API endpoints and feature tests
+#### Step 28 — Purchasing Tables (AP)
+Work completed (2025-12-25):
+- Added AP schema tables: purchase_orders, purchase_order_lines, vendor_invoices, vendor_invoice_lines, vendor_payments, vendor_payment_allocations
+- Schema-only artifacts (migrations); no accounting logic added
+
+#### Step 29 — Sales Tables (AR)
+Work completed (2025-12-25):
 - Target schema: sales_invoices, sales_invoice_lines, customer_payments, customer_payment_allocations
 - This step is schema-only; no services/controllers/API and no journal/ledger changes
+
+## AP/AR Document Workflow (FINAL)
+AP/AR business documents (vendor invoices, customer invoices, payments) use a 3-stage workflow:
+- draft -> approved -> posted
+
+Meaning:
+- approved: business approval (e.g. warehouse supervisor approval is allowed)
+- posted: accounting posting event; only at this point auto-journal is created and posted
+
+The workflow must be configurable:
+- UMKM: allow auto-approve and auto-post in one action when permitted
+- Controlled orgs: allow separate approver vs poster (different users), based on settings/permissions

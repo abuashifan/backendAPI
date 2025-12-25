@@ -160,17 +160,23 @@ Output: Business partners
 - Payments
 Output: AP schema
 
-[29] Sales Tables (AR) — IN PROGRESS (2025-12-25)
+[29] Sales Tables (AR) — COMPLETED (2025-12-25)
 - Sales invoices
 - Customer payments
 Output: AR schema
 
-[30] Purchasing Service — NOT STARTED
+[30] Purchasing Service — IN PROGRESS (2025-12-25)
 - AP transactions → auto journal
+- AP business documents follow 3-stage workflow: draft -> approved -> posted
+- Auto-journal is created and posted when the AP document is posted (not on approved)
+- Must support configurable behavior: UMKM may auto-approve and auto-post in one action when permitted; controlled orgs may require separate approver vs poster
 Output: AP accounting automation
 
 [31] Sales Service — NOT STARTED
 - AR transactions → auto journal
+- AR business documents follow 3-stage workflow: draft -> approved -> posted
+- Auto-journal is created and posted when the AR document is posted (not on approved)
+- Must support configurable behavior: UMKM may auto-approve and auto-post in one action when permitted; controlled orgs may require separate approver vs poster
 Output: AR accounting automation
 
 [32] Payment Service — NOT STARTED
