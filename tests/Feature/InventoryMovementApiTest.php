@@ -114,7 +114,7 @@ class InventoryMovementApiTest extends TestCase
             'movement_date' => '2025-12-25',
             'type' => 'in',
             'lines' => [
-                ['product_id' => $product->id, 'qty' => 10],
+                ['product_id' => $product->id, 'qty' => 10, 'unit_cost' => 1000],
             ],
         ])->assertCreated();
 
@@ -149,6 +149,76 @@ class InventoryMovementApiTest extends TestCase
 
         $this->postJson("/api/inventory-movements/{$outId}/post")
             ->assertOk();
+    }
+
+    public function test_fifo_valuation_allocates_cost_layers_on_out(): void
+    {
+        $this->seedPermissions();
+
+        $user = User::factory()->create();
+        $user->syncPermissions([
+            'inventory_movement.create',
+            'inventory_movement.edit',
+            'inventory_movement.view',
+            'inventory_movement.post',
+        ]);
+        Sanctum::actingAs($user);
+
+        $company = $this->makeCompany();
+        $warehouse = $this->makeWarehouse($company->id);
+        $product = $this->makeStockProduct($company->id);
+
+        // IN 10 @ 1,000
+        $in1 = $this->postJson('/api/inventory-movements', [
+            'company_id' => $company->id,
+            'warehouse_id' => $warehouse->id,
+            'movement_number' => 'IM-IN-001',
+            'movement_date' => '2025-12-25',
+            'type' => 'in',
+            'lines' => [
+                ['product_id' => $product->id, 'qty' => 10, 'unit_cost' => 1000],
+            ],
+        ])->assertCreated();
+
+        $in1Id = (int) $in1->json('data.id');
+        $this->postJson("/api/inventory-movements/{$in1Id}/post")->assertOk();
+
+        // IN 5 @ 2,000
+        $in2 = $this->postJson('/api/inventory-movements', [
+            'company_id' => $company->id,
+            'warehouse_id' => $warehouse->id,
+            'movement_number' => 'IM-IN-002',
+            'movement_date' => '2025-12-25',
+            'type' => 'in',
+            'lines' => [
+                ['product_id' => $product->id, 'qty' => 5, 'unit_cost' => 2000],
+            ],
+        ])->assertCreated();
+
+        $in2Id = (int) $in2->json('data.id');
+        $this->postJson("/api/inventory-movements/{$in2Id}/post")->assertOk();
+
+        // OUT 12 => cost = 10*1000 + 2*2000 = 14,000
+        $out = $this->postJson('/api/inventory-movements', [
+            'company_id' => $company->id,
+            'warehouse_id' => $warehouse->id,
+            'movement_number' => 'IM-OUT-001',
+            'movement_date' => '2025-12-25',
+            'type' => 'out',
+            'lines' => [
+                ['product_id' => $product->id, 'qty' => 12],
+            ],
+        ])->assertCreated();
+
+        $outId = (int) $out->json('data.id');
+
+        $posted = $this->postJson("/api/inventory-movements/{$outId}/post")
+            ->assertOk();
+
+        $this->assertSame('posted', $posted->json('data.status'));
+
+        $lineTotal = (string) $posted->json('data.lines.0.valued_total_cost');
+        $this->assertSame('14000.00', $lineTotal);
     }
 
     public function test_inventory_movement_rejects_service_products(): void

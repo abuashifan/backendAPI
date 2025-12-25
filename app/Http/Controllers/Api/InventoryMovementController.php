@@ -68,6 +68,7 @@ class InventoryMovementController extends Controller
             'lines' => ['required', 'array', 'min:1'],
             'lines.*.product_id' => ['required', 'integer', 'exists:products,id'],
             'lines.*.qty' => ['required', 'numeric', 'gt:0'],
+            'lines.*.unit_cost' => ['nullable', 'numeric', 'gt:0'],
             'lines.*.description' => ['nullable', 'string'],
         ]);
 
@@ -108,6 +109,7 @@ class InventoryMovementController extends Controller
             'lines' => ['required', 'array', 'min:1'],
             'lines.*.product_id' => ['required', 'integer', 'exists:products,id'],
             'lines.*.qty' => ['required', 'numeric', 'gt:0'],
+            'lines.*.unit_cost' => ['nullable', 'numeric', 'gt:0'],
             'lines.*.description' => ['nullable', 'string'],
         ]);
 

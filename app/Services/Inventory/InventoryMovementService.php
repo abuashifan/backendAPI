@@ -2,6 +2,8 @@
 
 namespace App\Services\Inventory;
 
+use App\Models\InventoryCostAllocation;
+use App\Models\InventoryCostLayer;
 use App\Models\InventoryMovement;
 use App\Models\InventoryMovementLine;
 use App\Models\Product;
@@ -192,6 +194,15 @@ class InventoryMovementService
                 }
             }
 
+            // Step 38 — Valuation (FIFO)
+            if ($movement->type === 'in') {
+                $this->createFifoLayersForInMovement($movement);
+            }
+
+            if ($movement->type === 'out') {
+                $this->allocateFifoCostsForOutMovement($movement);
+            }
+
             $movement->status = 'posted';
             $movement->posted_by = $actor->id;
             $movement->posted_at = now();
@@ -238,7 +249,95 @@ class InventoryMovementService
                 'product_id' => $line['product_id'],
                 'qty' => number_format($qty, 2, '.', ''),
                 'description' => $line['description'] ?? null,
+                'unit_cost' => array_key_exists('unit_cost', $line) ? $line['unit_cost'] : null,
+                'valued_unit_cost' => null,
+                'valued_total_cost' => null,
             ]);
+        }
+    }
+
+    private function createFifoLayersForInMovement(InventoryMovement $movement): void
+    {
+        foreach ($movement->lines as $line) {
+            $unitCost = $line->unit_cost;
+            if ($unitCost === null || (float) $unitCost <= 0) {
+                throw new \DomainException('unit_cost is required for IN movements (FIFO valuation).');
+            }
+
+            $qty = (float) $line->qty;
+            $unitCostFloat = (float) $unitCost;
+
+            InventoryCostLayer::query()->create([
+                'company_id' => $movement->company_id,
+                'warehouse_id' => $movement->warehouse_id,
+                'product_id' => $line->product_id,
+                'source_movement_line_id' => $line->id,
+                'received_at' => $movement->movement_date,
+                'unit_cost' => number_format($unitCostFloat, 6, '.', ''),
+                'qty_received' => number_format($qty, 2, '.', ''),
+                'qty_remaining' => number_format($qty, 2, '.', ''),
+            ]);
+        }
+    }
+
+    private function allocateFifoCostsForOutMovement(InventoryMovement $movement): void
+    {
+        foreach ($movement->lines as $line) {
+            // Remove previous valuation (idempotent for re-post attempts; should not happen but safe)
+            InventoryCostAllocation::query()->where('out_movement_line_id', $line->id)->delete();
+
+            $qtyToIssue = (float) $line->qty;
+            $totalCost = 0.0;
+
+            $layers = InventoryCostLayer::query()
+                ->where('company_id', $movement->company_id)
+                ->where('warehouse_id', $movement->warehouse_id)
+                ->where('product_id', $line->product_id)
+                ->where('qty_remaining', '>', 0)
+                ->orderBy('received_at')
+                ->orderBy('id')
+                ->lockForUpdate()
+                ->get();
+
+            foreach ($layers as $layer) {
+                if ($qtyToIssue <= 0) {
+                    break;
+                }
+
+                $layerRemaining = (float) $layer->qty_remaining;
+                if ($layerRemaining <= 0) {
+                    continue;
+                }
+
+                $takeQty = min($layerRemaining, $qtyToIssue);
+                $unitCost = (float) $layer->unit_cost;
+                $allocationCost = round($takeQty * $unitCost, 2);
+
+                InventoryCostAllocation::query()->create([
+                    'out_movement_line_id' => $line->id,
+                    'inventory_cost_layer_id' => $layer->id,
+                    'qty' => number_format($takeQty, 2, '.', ''),
+                    'unit_cost' => number_format($unitCost, 6, '.', ''),
+                    'total_cost' => number_format($allocationCost, 2, '.', ''),
+                ]);
+
+                $layer->qty_remaining = number_format(round($layerRemaining - $takeQty, 2), 2, '.', '');
+                $layer->save();
+
+                $qtyToIssue -= $takeQty;
+                $totalCost += $allocationCost;
+            }
+
+            if ($qtyToIssue > 0) {
+                throw new \DomainException('Insufficient inventory cost layers for product_id '.$line->product_id.'.');
+            }
+
+            $issuedQty = (float) $line->qty;
+            $valuedUnitCost = $issuedQty > 0 ? round($totalCost / $issuedQty, 6) : 0;
+
+            $line->valued_total_cost = number_format(round($totalCost, 2), 2, '.', '');
+            $line->valued_unit_cost = number_format($valuedUnitCost, 6, '.', '');
+            $line->save();
         }
     }
 

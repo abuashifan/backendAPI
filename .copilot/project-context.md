@@ -169,6 +169,13 @@ Work completed (2025-12-25):
 - Implemented basic stock rules (no negative stock on OUT posting; only stock_item products allowed)
 - Added feature tests for permissions and stock in/out behavior
 
+#### Step 38 — Inventory Valuation
+Work completed (2025-12-25):
+- Implemented FIFO valuation via inventory_cost_layers and inventory_cost_allocations
+- Inventory movement IN requires unit_cost on posting; creates FIFO layers
+- Inventory movement OUT consumes FIFO layers and stores valued_unit_cost / valued_total_cost per line
+- Added feature test covering FIFO allocation math; full suite remains green
+
 ## AP/AR Document Workflow (FINAL)
 AP/AR business documents (vendor invoices, customer invoices, payments) use a 3-stage workflow:
 - draft -> approved -> posted

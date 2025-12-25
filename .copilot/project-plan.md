@@ -211,7 +211,7 @@ Output: Inventory master data
 - Stock IN / OUT
 Output: Inventory flow
 
-[38] Inventory Valuation — NOT STARTED
+[38] Inventory Valuation — COMPLETED (2025-12-25)
 - FIFO or Average
 Output: Cost calculation
 
