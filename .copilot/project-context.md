@@ -119,3 +119,11 @@ Delivered capabilities:
 - General Ledger query derived from POSTED journal lines only
 
 Tracking status source of truth remains `.copilot/project-plan.md`.
+
+### Phase 3 — IN PROGRESS
+
+#### Step 27 — Vendor & Customer Master
+Work completed (2025-12-25):
+- Added `vendors` and `customers` tables (company-scoped unique codes)
+- Added `Vendor`/`Customer` models and CRUD services
+- Added permission-driven gates and protected API endpoints

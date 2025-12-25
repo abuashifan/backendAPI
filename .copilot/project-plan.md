@@ -148,7 +148,7 @@ Note: Some Phase 2-related code may already exist from earlier iterations; treat
 
 ## Phase 3 — AP / AR Automation
 
-[27] Vendor & Customer Master — NOT STARTED
+[27] Vendor & Customer Master — COMPLETED (2025-12-25)
 - vendors
 - customers
 Output: Business partners

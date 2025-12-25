@@ -36,6 +36,16 @@ class PermissionSeeder extends Seeder
             'journal.post',
             'journal.reverse',
 
+            // Phase 3 — Step 27: Vendor & Customer master data
+            'vendor.view',
+            'vendor.create',
+            'vendor.edit',
+            'vendor.delete',
+            'customer.view',
+            'customer.create',
+            'customer.edit',
+            'customer.delete',
+
             // System (required minimum)
             'user.manage',
             'permission.assign',

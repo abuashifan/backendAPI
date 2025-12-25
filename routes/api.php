@@ -2,12 +2,21 @@
 
 use App\Http\Controllers\Api\JournalController;
 use App\Http\Controllers\Api\AccountingPeriodController;
+use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\Audit\AuditIssueController;
 use App\Http\Controllers\Api\Audit\JournalAuditController;
 use App\Http\Controllers\Api\System\UserPermissionController;
+use App\Http\Controllers\Api\VendorController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function () {
+    // Phase 3 — Step 27: Vendor & Customer master data
+    Route::apiResource('vendors', VendorController::class)
+        ->only(['index', 'show', 'store', 'update', 'destroy']);
+
+    Route::apiResource('customers', CustomerController::class)
+        ->only(['index', 'show', 'store', 'update', 'destroy']);
+
     Route::apiResource('journals', JournalController::class)
         ->only(['index', 'show', 'store']);
 
