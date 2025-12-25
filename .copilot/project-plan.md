@@ -165,7 +165,7 @@ Output: AP schema
 - Customer payments
 Output: AR schema
 
-[30] Purchasing Service — IN PROGRESS (2025-12-25)
+[30] Purchasing Service — COMPLETED (2025-12-25)
 - AP transactions → auto journal
 - AP business documents follow 3-stage workflow: draft -> approved -> posted
 - Auto-journal is created and posted when the AP document is posted (not on approved)

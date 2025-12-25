@@ -90,50 +90,13 @@ Work completed (2025-12-25):
 - Schema-only artifacts (migrations); no services/controllers/API and no journal/ledger changes
 
 #### Step 30 — Purchasing Service (AP)
-Work in progress (2025-12-25):
-- Vendor invoice posting creates and posts an auto-journal on document posting
+Work completed (2025-12-25):
+- Vendor invoice draft CRUD service (draft create/update/delete + line totals)
+- Vendor invoice approve service (draft -> approved)
+- Vendor invoice posting service creates and posts an auto-journal on document posting (approved -> posted_at)
+- Purchase order draft CRUD service (draft create/update/delete + line totals)
+- Purchase order approve and cancel services
 - Added vendor_invoices.posted_by and vendor_invoices.posted_at
-
-## AP/AR Document Workflow (FINAL)
-AP/AR business documents (vendor invoices, customer invoices, payments) use a 3-stage workflow:
-- draft -> approved -> posted
-
-Meaning:
-- approved: business approval (e.g. warehouse supervisor approval is allowed)
-- posted: accounting posting event; only at this point auto-journal is created and posted
-
-The workflow must be configurable:
-- UMKM: allow auto-approve and auto-post in one action when permitted
-- Controlled orgs: allow separate approver vs poster (different users), based on settings/permissions
-
-## AP/AR Document Workflow (FINAL)
-AP/AR business documents (vendor invoices, customer invoices, payments) use a 3-stage workflow:
-- draft -> approved -> posted
-
-Meaning:
-- approved: business approval (e.g. warehouse supervisor approval is allowed)
-- posted: accounting posting event; only at this point auto-journal is created and posted
-
-The workflow must be configurable:
-- UMKM: allow auto-approve and auto-post in one action when permitted
-- Controlled orgs: allow separate approver vs poster (different users), based on settings/permissions
-
-### Phase 3 — IN PROGRESS
-
-#### Step 27 — Vendor & Customer Master
-Work completed (2025-12-25):
- - Added `vendors` and `customers` tables (company-scoped unique codes)
- - Added vendor/customer permissions and gates
- - Added protected API endpoints and feature tests
-#### Step 28 — Purchasing Tables (AP)
-Work completed (2025-12-25):
-- Added AP schema tables: purchase_orders, purchase_order_lines, vendor_invoices, vendor_invoice_lines, vendor_payments, vendor_payment_allocations
-- Schema-only artifacts (migrations); no accounting logic added
-
-#### Step 29 — Sales Tables (AR)
-Work completed (2025-12-25):
-- Target schema: sales_invoices, sales_invoice_lines, customer_payments, customer_payment_allocations
-- This step is schema-only; no services/controllers/API and no journal/ledger changes
 
 ## AP/AR Document Workflow (FINAL)
 AP/AR business documents (vendor invoices, customer invoices, payments) use a 3-stage workflow:
