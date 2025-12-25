@@ -57,6 +57,13 @@ class PermissionSeeder extends Seeder
             'warehouse.edit',
             'warehouse.delete',
 
+            // Phase 4 — Step 37: Inventory movement
+            'inventory_movement.view',
+            'inventory_movement.create',
+            'inventory_movement.edit',
+            'inventory_movement.delete',
+            'inventory_movement.post',
+
             // Phase 3 — Step 33: Purchasing (AP) API
             'purchase_order.view',
             'purchase_order.create',

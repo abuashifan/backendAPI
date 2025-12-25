@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\JournalController;
 use App\Http\Controllers\Api\AccountingPeriodController;
 use App\Http\Controllers\Api\CustomerController;
+use App\Http\Controllers\Api\InventoryMovementController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\Audit\AuditIssueController;
 use App\Http\Controllers\Api\Audit\JournalAuditController;
@@ -30,6 +31,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::apiResource('warehouses', WarehouseController::class)
         ->only(['index', 'show', 'store', 'update', 'destroy']);
+
+    // Phase 4 — Step 37: Inventory movement (stock in/out)
+    Route::apiResource('inventory-movements', InventoryMovementController::class)
+        ->only(['index', 'show', 'store', 'update', 'destroy']);
+    Route::post('inventory-movements/{inventoryMovement}/post', [InventoryMovementController::class, 'post']);
 
     // Phase 3 — Step 33: Purchasing (AP)
     Route::apiResource('purchase-orders', PurchaseOrderController::class)

@@ -7,6 +7,7 @@ use App\Policies\AccountingPeriodPolicy;
 use App\Policies\AuditPolicy;
 use App\Policies\CustomerPolicy;
 use App\Policies\CustomerPaymentPolicy;
+use App\Policies\InventoryMovementPolicy;
 use App\Policies\JournalPolicy;
 use App\Policies\ProductPolicy;
 use App\Policies\PurchaseOrderPolicy;
@@ -76,6 +77,13 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('warehouse.create', [WarehousePolicy::class, 'create']);
         Gate::define('warehouse.edit', [WarehousePolicy::class, 'edit']);
         Gate::define('warehouse.delete', [WarehousePolicy::class, 'delete']);
+
+        // Phase 4 — Step 37: Inventory movement
+        Gate::define('inventory_movement.view', [InventoryMovementPolicy::class, 'view']);
+        Gate::define('inventory_movement.create', [InventoryMovementPolicy::class, 'create']);
+        Gate::define('inventory_movement.edit', [InventoryMovementPolicy::class, 'edit']);
+        Gate::define('inventory_movement.delete', [InventoryMovementPolicy::class, 'delete']);
+        Gate::define('inventory_movement.post', [InventoryMovementPolicy::class, 'post']);
 
         // Phase 3 — Step 33: Purchasing API (AP)
         Gate::define('purchase_order.view', [PurchaseOrderPolicy::class, 'view']);

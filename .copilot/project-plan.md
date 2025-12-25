@@ -207,7 +207,7 @@ Output: Phase 3 completed
 - warehouses
 Output: Inventory master data
 
-[37] Inventory Movement Logic — NOT STARTED
+[37] Inventory Movement Logic — COMPLETED (2025-12-25)
 - Stock IN / OUT
 Output: Inventory flow
 

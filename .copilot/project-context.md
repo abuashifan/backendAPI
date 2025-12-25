@@ -161,6 +161,14 @@ Work completed (2025-12-25):
 - Added protected API endpoints (CRUD) for products and warehouses
 - Added feature tests for permission enforcement, happy-path CRUD, and per-company code uniqueness
 
+#### Step 37 — Inventory Movement Logic
+Work completed (2025-12-25):
+- Added inventory_movements and inventory_movement_lines tables (draft -> posted lifecycle)
+- Added InventoryMovement models, service layer, and protected API endpoints (CRUD + post)
+- Added inventory_movement.* permissions and gates
+- Implemented basic stock rules (no negative stock on OUT posting; only stock_item products allowed)
+- Added feature tests for permissions and stock in/out behavior
+
 ## AP/AR Document Workflow (FINAL)
 AP/AR business documents (vendor invoices, customer invoices, payments) use a 3-stage workflow:
 - draft -> approved -> posted
