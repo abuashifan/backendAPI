@@ -11,7 +11,12 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasApiTokens, HasFactory, Notifiable, \Spatie\Permission\Traits\HasRoles;
+    use HasApiTokens, HasFactory, Notifiable;
+    use \Spatie\Permission\Traits\HasRoles {
+        hasPermissionTo as spatieHasPermissionTo;
+        givePermissionTo as spatieGivePermissionTo;
+        syncPermissions as spatieSyncPermissions;
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -57,7 +62,16 @@ class User extends Authenticatable
      */
     public function hasPermission(string $permission): bool
     {
-        return $this->getDirectPermissions()->contains('name', $permission);
+        // Phase 2 rule: direct user permissions override role permissions.
+        // If the user has ANY direct permissions assigned, we ignore role inheritance.
+        $direct = $this->getDirectPermissions();
+
+        if ($direct->isNotEmpty()) {
+            return $direct->contains('name', $permission);
+        }
+
+        // No user override present → role templates may apply.
+        return $this->spatieHasPermissionTo($permission);
     }
 
     /**
@@ -87,7 +101,22 @@ class User extends Authenticatable
      */
     public function givePermission(string $permission): self
     {
-        $this->givePermissionTo($permission);
+        // Always assign directly to the user.
+        $this->spatieGivePermissionTo($permission);
+
+        return $this;
+    }
+
+    /**
+     * Sync direct permissions for this user.
+     *
+     * This defines the user's override set; role permissions are ignored when this set is non-empty.
+     *
+     * @param  array<int, string>  $permissions
+     */
+    public function syncPermissions(array $permissions): self
+    {
+        $this->spatieSyncPermissions($permissions);
 
         return $this;
     }

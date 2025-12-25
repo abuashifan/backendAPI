@@ -25,7 +25,7 @@ class PermissionSeeder extends Seeder
         $guardName = (string) config('auth.defaults.guard', 'web');
 
         $permissions = [
-            // Journals
+            // Journals (required minimum)
             'journal.view',
             'journal.create',
             'journal.edit',
@@ -36,37 +36,24 @@ class PermissionSeeder extends Seeder
             'journal.post',
             'journal.reverse',
 
-            // Accounting periods
-            'period.view',
+            // System (required minimum)
+            'user.manage',
+            'permission.assign',
+            'period.open',
             'period.close',
-            'period.reopen',
 
-            // Audit / Activity
-            'audit.view',
-            'audit.log.view',
+            // System helpers (used by existing API)
+            'permission.copy',
 
-            // Audit abilities (used by existing API endpoints/gates)
+            // Audit actions (used by existing API endpoints)
             'audit.viewStatus',
             'audit.check',
             'audit.flagIssue',
             'audit.resolve',
 
-            // Reporting
+            // Reporting (Phase 2 output)
             'report.trial_balance.view',
             'report.general_ledger.view',
-
-            // System / Access Control
-            'user.view',
-            'user.create',
-            'user.edit',
-            'user.deactivate',
-            'role.view',
-            'role.create',
-            'role.edit',
-            'role.delete',
-            'permission.view',
-            'permission.assign',
-            'permission.copy',
         ];
 
         foreach ($permissions as $permissionName) {

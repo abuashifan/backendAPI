@@ -2,12 +2,12 @@
 
 namespace App\Providers;
 
-use App\Domain\Accounting\Audit\AuditPolicy;
-use App\Domain\Accounting\Journal\JournalPolicy;
-use App\Domain\Accounting\Period\PeriodPolicy;
-use App\Domain\Accounting\Report\ReportPolicy;
-use App\Domain\System\SystemPolicy;
 use App\Models\User;
+use App\Policies\AccountingPeriodPolicy;
+use App\Policies\AuditPolicy;
+use App\Policies\JournalPolicy;
+use App\Policies\ReportPolicy;
+use App\Policies\UserPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -21,32 +21,33 @@ class AuthServiceProvider extends ServiceProvider
         // Phase 2 — Policy & Gate (authorization only).
         // Authorization checks must be permission-driven (user-centric).
 
-        // Journal Operations
-        Gate::define('journal.view', [JournalPolicy::class, 'viewJournal']);
-        Gate::define('journal.create', [JournalPolicy::class, 'createJournal']);
-        Gate::define('journal.post', [JournalPolicy::class, 'postJournal']);
-        Gate::define('journal.reverse', [JournalPolicy::class, 'reverseJournal']);
+        // Journal Operations (atomic)
+        Gate::define('journal.view', [JournalPolicy::class, 'view']);
+        Gate::define('journal.create', [JournalPolicy::class, 'create']);
+        Gate::define('journal.edit', [JournalPolicy::class, 'edit']);
+        Gate::define('journal.delete', [JournalPolicy::class, 'delete']);
+        Gate::define('journal.import', [JournalPolicy::class, 'import']);
+        Gate::define('journal.export', [JournalPolicy::class, 'export']);
+        Gate::define('journal.approve', [JournalPolicy::class, 'approve']);
+        Gate::define('journal.post', [JournalPolicy::class, 'post']);
+        Gate::define('journal.reverse', [JournalPolicy::class, 'reverse']);
 
-        // Audit Operations
-        Gate::define('audit.viewStatus', [AuditPolicy::class, 'viewAuditStatus']);
-        Gate::define('audit.check', [AuditPolicy::class, 'auditCheckJournal']);
-        Gate::define('audit.flagIssue', [AuditPolicy::class, 'flagAuditIssue']);
-        Gate::define('audit.resolve', [AuditPolicy::class, 'markAuditResolved']);
+        // Audit Operations (informational; not approval)
+        Gate::define('audit.viewStatus', [AuditPolicy::class, 'viewStatus']);
+        Gate::define('audit.check', [AuditPolicy::class, 'check']);
+        Gate::define('audit.flagIssue', [AuditPolicy::class, 'flagIssue']);
+        Gate::define('audit.resolve', [AuditPolicy::class, 'resolve']);
 
         // Period Operations
-        Gate::define('period.view', [PeriodPolicy::class, 'viewAccountingPeriod']);
-        Gate::define('period.close', [PeriodPolicy::class, 'closeAccountingPeriod']);
+        Gate::define('period.open', [AccountingPeriodPolicy::class, 'open']);
+        Gate::define('period.close', [AccountingPeriodPolicy::class, 'close']);
 
         // Reporting
-        Gate::define('report.trialBalance', [ReportPolicy::class, 'viewTrialBalance']);
-        Gate::define('report.generalLedger', [ReportPolicy::class, 'viewGeneralLedger']);
+        Gate::define('report.trialBalance', [ReportPolicy::class, 'trialBalance']);
+        Gate::define('report.generalLedger', [ReportPolicy::class, 'generalLedger']);
 
-        // System Administration
-        Gate::define('system.manageUsers', [SystemPolicy::class, 'manageUsers']);
-        Gate::define('system.manageRoles', [SystemPolicy::class, 'manageRoles']);
-        Gate::define('system.managePermissions', [SystemPolicy::class, 'managePermissions']);
-
-        // Phase 2 — User-centric permission management
+        // System / Access Control (user-centric)
+        Gate::define('user.manage', [UserPolicy::class, 'manage']);
         Gate::define('permission.assign', fn (User $user): bool => $user->hasPermission('permission.assign'));
         Gate::define('permission.copy', fn (User $user): bool => $user->hasPermission('permission.copy'));
     }

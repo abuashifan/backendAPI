@@ -26,7 +26,13 @@ class Journal extends Model
         'description',
         'status',
         'created_by',
+        'approved_by',
+        'approved_at',
+        'posted_by',
         'posted_at',
+        'reversed_by',
+        'reversed_at',
+        'reversal_of_journal_id',
     ];
 
     /**
@@ -42,7 +48,13 @@ class Journal extends Model
             'journal_date' => 'date',
             'source_id' => 'integer',
             'created_by' => 'integer',
+            'approved_by' => 'integer',
+            'approved_at' => 'datetime',
+            'posted_by' => 'integer',
             'posted_at' => 'datetime',
+            'reversed_by' => 'integer',
+            'reversed_at' => 'datetime',
+            'reversal_of_journal_id' => 'integer',
             'audited_by' => 'integer',
             'audited_at' => 'datetime',
         ];
