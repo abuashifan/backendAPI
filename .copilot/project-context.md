@@ -193,3 +193,7 @@ Meaning:
 The workflow must be configurable:
 - UMKM: allow auto-approve and auto-post in one action when permitted
 - Controlled orgs: allow separate approver vs poster (different users), based on settings/permissions
+
+## Sub-ledger Reporting (Planned)
+Note: AR/AP subsidiary ledgers (kartu piutang/kartu utang), aging, and reconciliation to GL are not implemented as dedicated report endpoints yet.
+They are planned for Phase 5 as new sub-steps under reporting, using posted documents + allocations as the primary source (with optional reconciliation to the AR/AP control accounts in GL).

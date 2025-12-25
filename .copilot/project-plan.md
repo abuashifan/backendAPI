@@ -248,6 +248,20 @@ Output: Core financial reports
 - Budget vs actual pivot
 Output: Budget reporting
 
+[45A] AR Subsidiary Ledger (Kartu Piutang) — NOT STARTED
+- Customer balance per customer
+- Customer ledger history (mutasi + running balance)
+- AR aging
+- Reconcile sub-ledger vs GL (AR control account)
+Output: AR sub-ledger & aging
+
+[45B] AP Subsidiary Ledger (Kartu Utang) — NOT STARTED
+- Vendor balance per vendor
+- Vendor ledger history (mutasi + running balance)
+- AP aging
+- Reconcile sub-ledger vs GL (AP control account)
+Output: AP sub-ledger & aging
+
 [46] API Hardening — NOT STARTED
 - Validation
 - Error handling
