@@ -104,14 +104,18 @@ When a step starts or completes, update the status here (Phase 2 section) and in
 - Trial Balance query
 - Phase 1 manual testing completed
 
-### Phase 2 — IN PROGRESS
+### Phase 2 — COMPLETED (2025-12-25)
 
-#### Phase 2 Notes (Status Alignment)
-Phase 2 scope and step definitions have been updated (see `.copilot/project-plan.md`).
+#### Phase 2 Summary
+Phase 2 steps [16]–[26] are implemented and validated.
 
-Important: earlier implementations (seeders/policies/audit endpoints) were created under a prior set of assumptions and may require refactoring to match the FINAL decisions:
-- Permission model must be user-centric (roles optional templates).
-- Journal lifecycle must support draft/approved/posted/reversed.
-- Approval is optional; self-approval is allowed; no separation-of-duty enforcement.
+Delivered capabilities:
+- User-centric permissions (roles optional templates) and direct-permission override behavior
+- Permission-driven Policies/Gates (no role-name checks)
+- Journal lifecycle transitions (draft → approved → posted → reversed) with optional approval and self-approval allowed
+- Journal approve/post/reverse APIs and services
+- Period open/close (lock) enforced for posting/reversal
+- Audit logging for journal and period lifecycle events (recording only)
+- General Ledger query derived from POSTED journal lines only
 
-Use `.copilot/project-plan.md` as the source of truth for what to implement next.
+Tracking status source of truth remains `.copilot/project-plan.md`.

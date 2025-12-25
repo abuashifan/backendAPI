@@ -106,40 +106,40 @@ Note: Some Phase 2-related code may already exist from earlier iterations; treat
 - Define final permission list per module
 - Ensure permissions are independent of roles
 
-[18] User Permission Assignment & Override — NOT STARTED
+[18] User Permission Assignment & Override — COMPLETED (2025-12-25)
 - Assign permissions directly to users
 - Allow override even if user has a role
 - Support permission copy between users
 
-[19] Policy & Gate (Permission-Driven) — NOT STARTED
+[19] Policy & Gate (Permission-Driven) — COMPLETED (2025-12-25)
 - Implement Laravel Policy / Gate
 - Authorization checks MUST use permission only
 
-[20] Journal Status & Transition Rules — NOT STARTED
+[20] Journal Status & Transition Rules — COMPLETED (2025-12-25)
 - Define permission-based journal state transitions
 - Support self-approve, auto-approve, skip-approve
 
-[21] Journal Approval & Posting API — NOT STARTED
+[21] Journal Approval & Posting API — COMPLETED (2025-12-25)
 - Implement create (draft), approve (optional), post
 - Auto-approve when allowed by permission
 - Validate period and budget
 
-[22] Reversal Journal Logic — NOT STARTED
+[22] Reversal Journal Logic — COMPLETED (2025-12-25)
 - Allow reversal for POSTED journals only
 - Create automatic reversing journal
 
-[23] Period Lock (Open / Close) — NOT STARTED
+[23] Period Lock (Open / Close) — COMPLETED (2025-12-25)
 - Block posting & reversal when period is closed
 - Allow reopen with permission & audit log
 
-[24] Audit Log & Activity Tracking — NOT STARTED
+[24] Audit Log & Activity Tracking — COMPLETED (2025-12-25)
 - Log create, approve, post, reverse, period open/close
 - Audit is RECORDING, not PREVENTION
 
-[25] General Ledger Query — NOT STARTED
+[25] General Ledger Query — COMPLETED (2025-12-25)
 - GL is derived from POSTED journal_lines only
 
-[26] Phase 2 Review — NOT STARTED
+[26] Phase 2 Review — COMPLETED (2025-12-25)
 - Validate UMKM scenario (1 user, all permissions)
 - Validate multi-user scenario
 - Ensure no enforced workflow rigidity
