@@ -5,6 +5,9 @@ use App\Http\Controllers\Api\AccountingPeriodController;
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\Audit\AuditIssueController;
 use App\Http\Controllers\Api\Audit\JournalAuditController;
+use App\Http\Controllers\Api\Accounting\AP\PurchaseOrderController;
+use App\Http\Controllers\Api\Accounting\AP\VendorInvoiceController;
+use App\Http\Controllers\Api\Accounting\AP\VendorPaymentController;
 use App\Http\Controllers\Api\System\UserPermissionController;
 use App\Http\Controllers\Api\VendorController;
 use Illuminate\Support\Facades\Route;
@@ -16,6 +19,22 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::apiResource('customers', CustomerController::class)
         ->only(['index', 'show', 'store', 'update', 'destroy']);
+
+    // Phase 3 — Step 33: Purchasing (AP)
+    Route::apiResource('purchase-orders', PurchaseOrderController::class)
+        ->only(['index', 'show', 'store', 'update', 'destroy']);
+    Route::post('purchase-orders/{purchaseOrder}/approve', [PurchaseOrderController::class, 'approve']);
+    Route::post('purchase-orders/{purchaseOrder}/cancel', [PurchaseOrderController::class, 'cancel']);
+
+    Route::apiResource('vendor-invoices', VendorInvoiceController::class)
+        ->only(['index', 'show', 'store', 'update', 'destroy']);
+    Route::post('vendor-invoices/{vendorInvoice}/approve', [VendorInvoiceController::class, 'approve']);
+    Route::post('vendor-invoices/{vendorInvoice}/post', [VendorInvoiceController::class, 'post']);
+
+    Route::apiResource('vendor-payments', VendorPaymentController::class)
+        ->only(['index', 'show', 'store', 'update', 'destroy']);
+    Route::post('vendor-payments/{vendorPayment}/approve', [VendorPaymentController::class, 'approve']);
+    Route::post('vendor-payments/{vendorPayment}/post', [VendorPaymentController::class, 'post']);
 
     Route::apiResource('journals', JournalController::class)
         ->only(['index', 'show', 'store']);

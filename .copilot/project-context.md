@@ -119,6 +119,18 @@ Work completed (2025-12-25):
 	- Posting requires allocations sum == payment amount
 - Added unit tests for customer/vendor payment posting (happy path, period-closed, auto-approve+post)
 
+#### Step 33 — Purchasing API
+Work completed (2025-12-25):
+- Added protected API endpoints for:
+	- Purchase Orders (CRUD + approve + cancel)
+	- Vendor Invoices (CRUD + approve + post)
+	- Vendor Payments (CRUD + approve + post)
+- Added purchasing permissions and gates:
+	- purchase_order.view|create|edit|delete|approve|cancel
+	- vendor_invoice.view|create|edit|delete|approve|post
+	- vendor_payment.view|create|edit|delete|approve|post
+- Added feature tests covering permission enforcement and happy-path workflows
+
 ## AP/AR Document Workflow (FINAL)
 AP/AR business documents (vendor invoices, customer invoices, payments) use a 3-stage workflow:
 - draft -> approved -> posted

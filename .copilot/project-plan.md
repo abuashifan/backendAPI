@@ -186,7 +186,7 @@ Output: AR accounting automation
 - Vendor payment journal: Dr AP, Cr Cash/Bank
 Output: Payment accounting
 
-[33] Purchasing API — NOT STARTED
+[33] Purchasing API — COMPLETED (2025-12-25)
 - PO, Invoice, Payment
 Output: AP API
 

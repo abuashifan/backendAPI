@@ -46,6 +46,28 @@ class PermissionSeeder extends Seeder
             'customer.edit',
             'customer.delete',
 
+            // Phase 3 — Step 33: Purchasing (AP) API
+            'purchase_order.view',
+            'purchase_order.create',
+            'purchase_order.edit',
+            'purchase_order.delete',
+            'purchase_order.approve',
+            'purchase_order.cancel',
+
+            'vendor_invoice.view',
+            'vendor_invoice.create',
+            'vendor_invoice.edit',
+            'vendor_invoice.delete',
+            'vendor_invoice.approve',
+            'vendor_invoice.post',
+
+            'vendor_payment.view',
+            'vendor_payment.create',
+            'vendor_payment.edit',
+            'vendor_payment.delete',
+            'vendor_payment.approve',
+            'vendor_payment.post',
+
             // System (required minimum)
             'user.manage',
             'permission.assign',
