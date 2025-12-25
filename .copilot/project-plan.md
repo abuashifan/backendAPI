@@ -190,11 +190,11 @@ Output: Payment accounting
 - PO, Invoice, Payment
 Output: AP API
 
-[34] Sales API — NOT STARTED
+[34] Sales API — COMPLETED (2025-12-25)
 - Invoice, Payment
 Output: AR API
 
-[35] Phase 3 Review — NOT STARTED
+[35] Phase 3 Review — COMPLETED (2025-12-25)
 - End-to-end AP/AR testing
 Output: Phase 3 completed
 

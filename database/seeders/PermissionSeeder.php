@@ -68,6 +68,21 @@ class PermissionSeeder extends Seeder
             'vendor_payment.approve',
             'vendor_payment.post',
 
+            // Phase 3 — Step 34: Sales (AR) API
+            'sales_invoice.view',
+            'sales_invoice.create',
+            'sales_invoice.edit',
+            'sales_invoice.delete',
+            'sales_invoice.approve',
+            'sales_invoice.post',
+
+            'customer_payment.view',
+            'customer_payment.create',
+            'customer_payment.edit',
+            'customer_payment.delete',
+            'customer_payment.approve',
+            'customer_payment.post',
+
             // System (required minimum)
             'user.manage',
             'permission.assign',

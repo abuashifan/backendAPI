@@ -8,6 +8,8 @@ use App\Http\Controllers\Api\Audit\JournalAuditController;
 use App\Http\Controllers\Api\Accounting\AP\PurchaseOrderController;
 use App\Http\Controllers\Api\Accounting\AP\VendorInvoiceController;
 use App\Http\Controllers\Api\Accounting\AP\VendorPaymentController;
+use App\Http\Controllers\Api\Accounting\AR\CustomerPaymentController;
+use App\Http\Controllers\Api\Accounting\AR\SalesInvoiceController;
 use App\Http\Controllers\Api\System\UserPermissionController;
 use App\Http\Controllers\Api\VendorController;
 use Illuminate\Support\Facades\Route;
@@ -35,6 +37,17 @@ Route::middleware('auth:sanctum')->group(function () {
         ->only(['index', 'show', 'store', 'update', 'destroy']);
     Route::post('vendor-payments/{vendorPayment}/approve', [VendorPaymentController::class, 'approve']);
     Route::post('vendor-payments/{vendorPayment}/post', [VendorPaymentController::class, 'post']);
+
+    // Phase 3 — Step 34: Sales (AR)
+    Route::apiResource('sales-invoices', SalesInvoiceController::class)
+        ->only(['index', 'show', 'store', 'update', 'destroy']);
+    Route::post('sales-invoices/{salesInvoice}/approve', [SalesInvoiceController::class, 'approve']);
+    Route::post('sales-invoices/{salesInvoice}/post', [SalesInvoiceController::class, 'post']);
+
+    Route::apiResource('customer-payments', CustomerPaymentController::class)
+        ->only(['index', 'show', 'store', 'update', 'destroy']);
+    Route::post('customer-payments/{customerPayment}/approve', [CustomerPaymentController::class, 'approve']);
+    Route::post('customer-payments/{customerPayment}/post', [CustomerPaymentController::class, 'post']);
 
     Route::apiResource('journals', JournalController::class)
         ->only(['index', 'show', 'store']);

@@ -6,9 +6,11 @@ use App\Models\User;
 use App\Policies\AccountingPeriodPolicy;
 use App\Policies\AuditPolicy;
 use App\Policies\CustomerPolicy;
+use App\Policies\CustomerPaymentPolicy;
 use App\Policies\JournalPolicy;
 use App\Policies\PurchaseOrderPolicy;
 use App\Policies\ReportPolicy;
+use App\Policies\SalesInvoicePolicy;
 use App\Policies\UserPolicy;
 use App\Policies\VendorInvoicePolicy;
 use App\Policies\VendorPaymentPolicy;
@@ -83,6 +85,21 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('vendor_payment.delete', [VendorPaymentPolicy::class, 'delete']);
         Gate::define('vendor_payment.approve', [VendorPaymentPolicy::class, 'approve']);
         Gate::define('vendor_payment.post', [VendorPaymentPolicy::class, 'post']);
+
+        // Phase 3 — Step 34: Sales API (AR)
+        Gate::define('sales_invoice.view', [SalesInvoicePolicy::class, 'view']);
+        Gate::define('sales_invoice.create', [SalesInvoicePolicy::class, 'create']);
+        Gate::define('sales_invoice.edit', [SalesInvoicePolicy::class, 'edit']);
+        Gate::define('sales_invoice.delete', [SalesInvoicePolicy::class, 'delete']);
+        Gate::define('sales_invoice.approve', [SalesInvoicePolicy::class, 'approve']);
+        Gate::define('sales_invoice.post', [SalesInvoicePolicy::class, 'post']);
+
+        Gate::define('customer_payment.view', [CustomerPaymentPolicy::class, 'view']);
+        Gate::define('customer_payment.create', [CustomerPaymentPolicy::class, 'create']);
+        Gate::define('customer_payment.edit', [CustomerPaymentPolicy::class, 'edit']);
+        Gate::define('customer_payment.delete', [CustomerPaymentPolicy::class, 'delete']);
+        Gate::define('customer_payment.approve', [CustomerPaymentPolicy::class, 'approve']);
+        Gate::define('customer_payment.post', [CustomerPaymentPolicy::class, 'post']);
 
         // System / Access Control (user-centric)
         Gate::define('user.manage', [UserPolicy::class, 'manage']);

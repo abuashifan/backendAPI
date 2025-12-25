@@ -131,6 +131,25 @@ Work completed (2025-12-25):
 	- vendor_payment.view|create|edit|delete|approve|post
 - Added feature tests covering permission enforcement and happy-path workflows
 
+#### Step 34 — Sales API
+Work completed (2025-12-25):
+- Added protected API endpoints for:
+	- Sales Invoices (CRUD + approve + post)
+	- Customer Payments (CRUD + approve + post)
+- Added sales permissions and gates:
+	- sales_invoice.view|create|edit|delete|approve|post
+	- customer_payment.view|create|edit|delete|approve|post
+- Added feature tests covering permission enforcement and happy-path workflows
+
+#### Step 35 — Phase 3 Review
+Work completed (2025-12-25):
+- Added end-to-end feature tests validating AP/AR flows:
+	- Vendor invoice posting + vendor payment posting create posted, balanced journals with expected account codes
+	- Sales invoice posting + customer payment posting create posted, balanced journals with expected account codes
+- Validated key guardrails:
+	- Period lock blocks posting when closed
+	- Payment allocations require posted invoices
+
 ## AP/AR Document Workflow (FINAL)
 AP/AR business documents (vendor invoices, customer invoices, payments) use a 3-stage workflow:
 - draft -> approved -> posted
