@@ -105,6 +105,20 @@ Work completed (2025-12-25):
 - Sales invoice posting service creates and posts an auto-journal on document posting (approved -> posted_at)
 - Added sales_invoices.posted_by and sales_invoices.posted_at
 
+#### Step 32 — Payment Service
+Work completed (2025-12-25):
+- Added posted_by and posted_at to customer_payments and vendor_payments
+- Added payment models: CustomerPayment, CustomerPaymentAllocation, VendorPayment, VendorPaymentAllocation
+- Added payment draft services (create/update/delete) with allocation validation:
+	- allocations require posted invoices
+	- allocations must not exceed payment amount during draft
+- Added payment approve services (draft -> approved) with open-period check
+- Added payment posting services (approved -> posted_at) that create and post auto-journals:
+	- Customer receipt: Dr Cash/Bank (1-1100 for cash, else 1-1200), Cr AR (1-1300)
+	- Vendor payment: Dr AP (2-1100), Cr Cash/Bank (1-1100 for cash, else 1-1200)
+	- Posting requires allocations sum == payment amount
+- Added unit tests for customer/vendor payment posting (happy path, period-closed, auto-approve+post)
+
 ## AP/AR Document Workflow (FINAL)
 AP/AR business documents (vendor invoices, customer invoices, payments) use a 3-stage workflow:
 - draft -> approved -> posted

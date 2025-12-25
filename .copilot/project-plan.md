@@ -179,8 +179,11 @@ Output: AP accounting automation
 - Must support configurable behavior: UMKM may auto-approve and auto-post in one action when permitted; controlled orgs may require separate approver vs poster
 Output: AR accounting automation
 
-[32] Payment Service — NOT STARTED
-- Cash / Bank journals
+[32] Payment Service — COMPLETED (2025-12-25)
+- Customer payments and vendor payments follow 3-stage workflow: draft -> approved -> posted
+- Auto-journal is created and posted when payment is posted
+- Customer receipt journal: Dr Cash/Bank, Cr AR
+- Vendor payment journal: Dr AP, Cr Cash/Bank
 Output: Payment accounting
 
 [33] Purchasing API — NOT STARTED
