@@ -219,6 +219,30 @@ Output: Cost calculation
 - Sales → COGS journal
 Output: Correct margins
 
+[39A] Inventory Receiving & Putaway — NOT STARTED
+- Receiving flow for purchased goods (can be linked to PO and/or vendor invoice)
+- Post inventory IN based on received quantities
+- Minimal putaway support (record where stock is stored; warehouse-level now, optional bin-level later)
+Output: Controlled receiving into inventory
+
+[39B] Warehouse Transfer (Inter-Warehouse) — NOT STARTED
+- Transfer stock from warehouse A to warehouse B
+- Posting must be atomic (OUT from source + IN to destination)
+- Preserve valuation/cost basis on transfer (move FIFO layers between warehouses)
+Output: Stock transfer supported
+
+[39C] Purchase Return (Retur Pembelian) — NOT STARTED
+- Return goods to vendor (inventory OUT) linked to purchase document
+- Ensure valuation handling for returned quantities
+- Accounting impact via AP automation (reduce AP / purchase return logic)
+Output: Purchase returns supported
+
+[39D] Sales Return (Retur Penjualan) — NOT STARTED
+- Return goods from customer (inventory IN) linked to sales invoice/credit memo
+- Reverse/adjust COGS as appropriate based on original costs
+- Accounting impact via AR automation (credit memo / reduce AR and revenue)
+Output: Sales returns supported
+
 [40] Project & Budget Tables — NOT STARTED
 - project_budget
 Output: Budget schema
@@ -261,6 +285,18 @@ Output: AR sub-ledger & aging
 - AP aging
 - Reconcile sub-ledger vs GL (AP control account)
 Output: AP sub-ledger & aging
+
+[45C] Sales/Purchase Charges & Discounts — NOT STARTED
+- Support additional charges on sales/purchase documents (e.g. freight/shipping/handling)
+- Support discounts (line-level and/or document-level)
+- Ensure correct journal impact (revenue/expense/contra accounts)
+Output: Charges & discounts supported
+
+[45D] Down Payments (Uang Muka) — NOT STARTED
+- Customer deposits (liability) and application to sales invoices
+- Vendor advances (asset) and application to vendor invoices
+- Reconcile deposits/advances vs GL control accounts
+Output: Down payment workflow supported
 
 [46] API Hardening — NOT STARTED
 - Validation

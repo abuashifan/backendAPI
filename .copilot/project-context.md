@@ -182,6 +182,13 @@ Work completed (2025-12-25):
 - COGS journal uses Dr 5-1100 (COGS) and Cr 1-1400 (Inventory), based on valued_total_cost from FIFO allocations
 - Added feature test verifying COGS journal creation and balanced lines
 
+#### Inventory Extensions (Planned)
+- Warehouse transfer (inter-warehouse) will be modeled as an atomic OUT+IN that preserves valuation (FIFO layers move with the stock).
+- Returns will be modeled explicitly:
+	- Purchase return: inventory OUT back to vendor linked to purchasing documents
+	- Sales return: inventory IN from customer linked to sales documents (with COGS reversal/adjustment rules)
+- Inventory receiving & putaway will be added as a controlled operational flow; current scope supports warehouse-level placement, with optional bin-level putaway as a later enhancement if needed.
+
 ## AP/AR Document Workflow (FINAL)
 AP/AR business documents (vendor invoices, customer invoices, payments) use a 3-stage workflow:
 - draft -> approved -> posted
@@ -197,3 +204,10 @@ The workflow must be configurable:
 ## Sub-ledger Reporting (Planned)
 Note: AR/AP subsidiary ledgers (kartu piutang/kartu utang), aging, and reconciliation to GL are not implemented as dedicated report endpoints yet.
 They are planned for Phase 5 as new sub-steps under reporting, using posted documents + allocations as the primary source (with optional reconciliation to the AR/AP control accounts in GL).
+
+## Charges, Discounts, and Down Payments (Planned)
+- Additional charges (e.g. shipping/freight/handling) and discounts (line-level and/or document-level) are not explicitly supported in Phase 3 document schemas/services yet.
+- Down payments (uang muka) are not implemented yet; planned support covers:
+	- Customer deposits (liability) with application to sales invoices
+	- Vendor advances (asset) with application to vendor invoices
+- Any landed-cost behavior (capitalizing purchase freight into inventory valuation) will be treated as an explicit valuation enhancement (so it does not silently distort FIFO costing).
