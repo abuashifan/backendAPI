@@ -7,6 +7,7 @@ use App\Models\ChartOfAccount;
 use App\Models\Journal;
 use App\Models\SalesInvoice;
 use App\Models\User;
+use App\Services\Accounting\Inventory\PostCogsJournalForSalesInvoiceService;
 use App\Services\Accounting\Journal\JournalService;
 use App\Services\Accounting\Journal\PostJournalService;
 use App\Services\Audit\AuditLogger;
@@ -18,6 +19,7 @@ class PostSalesInvoiceService
         private readonly JournalService $journalService,
         private readonly PostJournalService $postJournalService,
         private readonly ApproveSalesInvoiceService $approveSalesInvoiceService,
+        private readonly PostCogsJournalForSalesInvoiceService $postCogsJournalForSalesInvoiceService,
     ) {
     }
 
@@ -86,6 +88,9 @@ class PostSalesInvoiceService
             );
 
             $posted = $this->postJournalService->post($journal, $actor);
+
+            // Phase 4 — Step 39: COGS journal (only when stock items exist & inventory movement is present)
+            $this->postCogsJournalForSalesInvoiceService->postIfNeeded($invoice, $actor);
 
             $old = [
                 'posted_by' => $invoice->posted_by,

@@ -176,6 +176,12 @@ Work completed (2025-12-25):
 - Inventory movement OUT consumes FIFO layers and stores valued_unit_cost / valued_total_cost per line
 - Added feature test covering FIFO allocation math; full suite remains green
 
+#### Step 39 — COGS Journal
+Work completed (2025-12-25):
+- Posting a sales invoice now auto-posts a COGS journal when stock-item products are present and a posted inventory OUT movement exists for the invoice
+- COGS journal uses Dr 5-1100 (COGS) and Cr 1-1400 (Inventory), based on valued_total_cost from FIFO allocations
+- Added feature test verifying COGS journal creation and balanced lines
+
 ## AP/AR Document Workflow (FINAL)
 AP/AR business documents (vendor invoices, customer invoices, payments) use a 3-stage workflow:
 - draft -> approved -> posted

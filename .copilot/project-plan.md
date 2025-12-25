@@ -215,7 +215,7 @@ Output: Inventory flow
 - FIFO or Average
 Output: Cost calculation
 
-[39] COGS Journal — NOT STARTED
+[39] COGS Journal — COMPLETED (2025-12-25)
 - Sales → COGS journal
 Output: Correct margins
 
